@@ -24,7 +24,6 @@ namespace APIorm
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<ProdutoContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
                         
