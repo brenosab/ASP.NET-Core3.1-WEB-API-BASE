@@ -17,14 +17,12 @@ namespace APIorm.Controllers
             _service = service;
         }
 
-        // GET: api/Produto
         [HttpGet]
         public async Task<IActionResult> GetProdutos()
         {
             return Ok(await _service.GetAll());
         }
 
-        // GET: api/Produto/5
         [HttpGet("{id}")]
         public IActionResult GetProduto(int id)
         {
@@ -59,7 +57,6 @@ namespace APIorm.Controllers
             }
         }
 
-        // PUT: api/Produto/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduto(long id, Produto produto)
         {
@@ -73,7 +70,7 @@ namespace APIorm.Controllers
                 return BadRequest(new { msg = err });
             }
         }
-        // POST: api/Produto
+
         [HttpPost]
         public async Task<IActionResult> PostProduto(Produto produto)
         {
@@ -87,6 +84,7 @@ namespace APIorm.Controllers
                 return BadRequest(new { msg = err });
             }
         }
+
         [Route("[Action]")]
         [HttpPost]
         public async Task<IActionResult> PostProdutoList(IEnumerable<Produto> produtoList)
@@ -102,7 +100,6 @@ namespace APIorm.Controllers
             }
         }
 
-        // DELETE: api/Produto/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduto(long id)
         {

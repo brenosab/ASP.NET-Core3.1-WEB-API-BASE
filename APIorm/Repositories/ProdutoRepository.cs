@@ -23,6 +23,8 @@ namespace APIorm.Repositories
         {
             try
             {
+                if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+
                 var produto = _context.Produtos
                     .Select(b => b)
                     .Where(b => b.Codigo == id)
@@ -41,6 +43,8 @@ namespace APIorm.Repositories
         {
             try
             {
+                if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+
                 return await _context.Produtos.ToListAsync();
             }
             catch(Exception e)
@@ -53,6 +57,8 @@ namespace APIorm.Repositories
         {
             try
             {
+                if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+
                 List<Erro> erros = new List<Erro>() { };
                 
                 var produtos = await _context.Produtos
@@ -77,6 +83,8 @@ namespace APIorm.Repositories
         {
             try
             {
+                if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+
                 _context.Entry(produto).State = EntityState.Modified;
 
                 try
@@ -106,6 +114,8 @@ namespace APIorm.Repositories
         {
             try
             {
+                if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+
                 _context.Produtos.Add(produto);
                 await _context.SaveChangesAsync();
                 return string.Empty;
@@ -119,6 +129,8 @@ namespace APIorm.Repositories
         {
             try
             {
+                if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+
                 _context.Produtos.AddRange(produtoList);
                 await _context.SaveChangesAsync();              
                 
@@ -134,6 +146,8 @@ namespace APIorm.Repositories
         {
             try
             {
+                if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+
                 var produto = await _context.Produtos.FindAsync(id);
                 if (produto == null)
                 {
