@@ -26,7 +26,10 @@ namespace APIorm
         {
             services.AddDbContext<ProdutoContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-                        
+
+            services.AddDbContext<CompraContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
