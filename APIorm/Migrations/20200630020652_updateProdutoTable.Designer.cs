@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIorm.Migrations
 {
     [DbContext(typeof(ProdutoContext))]
-    [Migration("20200607140232_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200630020652_updateProdutoTable")]
+    partial class updateProdutoTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,7 +22,7 @@ namespace APIorm.Migrations
 
             modelBuilder.Entity("APIorm.Models.Produto", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long>("IdProduto")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -33,7 +33,10 @@ namespace APIorm.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<double>("Valor")
+                        .HasColumnType("float");
+
+                    b.HasKey("IdProduto");
 
                     b.ToTable("Produtos");
                 });

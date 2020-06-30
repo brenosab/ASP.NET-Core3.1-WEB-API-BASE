@@ -166,7 +166,7 @@ namespace APIorm.Repositories
 
         private bool ProdutoExists(long id)
         {
-            return _context.Produtos.Any(e => e.Id == id);
+            return _context.Produtos.Any(e => e.IdProduto == id);
         }
     }
 }

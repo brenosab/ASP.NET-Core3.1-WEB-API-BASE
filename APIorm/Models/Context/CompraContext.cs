@@ -10,5 +10,21 @@ namespace APIorm.Models.Context
 
         }
         public DbSet<Compra> Compras { get; set; }
+        public DbSet<ItensCompra> ItensCompras { get; set; }
+
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ItensCompra>()
+                .HasOne(p => p.Compra)
+                .WithMany(b => b.ItensCompra)
+                .HasForeignKey(p => p.IdCompra);
+
+            modelBuilder.Entity<ItensCompra>()
+                .HasOne(p => p.Produto)
+                .WithMany(b => b.ItensCompra)
+                .HasForeignKey(p => p.IdProduto);
+        }
+      
     }
 }

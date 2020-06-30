@@ -10,25 +10,30 @@ namespace APIorm.Models.Context
 
         }
         public DbSet<Produto> Produtos { get; set; }
-       /*
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Produto>()
-                .HasData(
-                    new Produto
-                    {
-                        Id = 1,
-                        Descricao = "ALCOOL EM GEL 1L",
-                        Codigo = 1
-                    },
-                    new Produto
-                    {
-                        Id = 2,
-                        Descricao = "MÁSCARA",
-                        Codigo = 22
-                    }
-                );
+                .HasKey(p => p.IdProduto);
+
+            /*.HasData(
+                new Produto
+                {
+                    IdProduto = 1,
+                    Valor = 8.20,
+                    Descricao = "ALCOOL EM GEL 1L",
+                    Codigo = 1
+                },
+                new Produto
+                {
+                    IdProduto = 2,
+                    Valor = 1.40,
+                    Descricao = "MÁSCARA",
+                    Codigo = 22
+                }
+            )
+            */
         }
-        */
+
     }
 }

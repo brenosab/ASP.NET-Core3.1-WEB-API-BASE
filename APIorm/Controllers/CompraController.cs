@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using APIorm.Models;
 using APIorm.Services.Interfaces;
 using System;
@@ -39,6 +37,25 @@ namespace APIorm.Controllers
                 return BadRequest(new { msg = err });
             }
         }
+        [Route("[Action]")]
+        [HttpPost]
+        public async Task<IActionResult> GetCompraList(IEnumerable<int> idList)
+        {
+            try
+            {
+                var response = await _service.GetCompraList(idList);
+                if (response.erros != null)
+                {
+                    return Ok(new { compras = response.objValue, response.erros });
+                }
+                return Ok(new { compras = response.objValue });
+            }
+            catch (Exception e)
+            {
+                var err = e.Message;
+                return BadRequest(new { msg = err });
+            }
+        }
 
         // PUT: api/Compra/5
         [HttpPut("{id}")]
@@ -57,7 +74,7 @@ namespace APIorm.Controllers
 
         // POST: api/Compra
         [HttpPost]
-        public async Task<ActionResult<Compra>> PostCompra(Compra compra)
+        public async Task<IActionResult> PostCompra(Compra compra)
         {
             try
             {
@@ -69,10 +86,24 @@ namespace APIorm.Controllers
                 return BadRequest(new { msg = err });
             }
         }
+        [Route("[Action]")]
+        [HttpPost]
+        public async Task<IActionResult> PostProdutoList(IEnumerable<Compra> compraList)
+        {
+            try
+            {
+                return Ok(await _service.PostCompraList(compraList));
+            }
+            catch (Exception e)
+            {
+                var err = e.Message;
+                return BadRequest(new { msg = err });
+            }
+        }
 
         // DELETE: api/Compra/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Compra>> DeleteCompra(long id)
+        public async Task<IActionResult> DeleteCompra(long id)
         {
             try
             {
@@ -84,6 +115,5 @@ namespace APIorm.Controllers
                 return BadRequest(new { msg = err });
             }
         }
-
     }
 }

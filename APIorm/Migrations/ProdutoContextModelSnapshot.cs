@@ -20,7 +20,7 @@ namespace APIorm.Migrations
 
             modelBuilder.Entity("APIorm.Models.Produto", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long>("IdProduto")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -31,23 +31,12 @@ namespace APIorm.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<double>("Valor")
+                        .HasColumnType("float");
+
+                    b.HasKey("IdProduto");
 
                     b.ToTable("Produtos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Codigo = 1,
-                            Descricao = "ALCOOL EM GEL 1L"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Codigo = 22,
-                            Descricao = "MÁSCARA"
-                        });
                 });
 #pragma warning restore 612, 618
         }
