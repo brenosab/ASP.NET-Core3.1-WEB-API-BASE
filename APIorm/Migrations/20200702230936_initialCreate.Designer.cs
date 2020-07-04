@@ -4,14 +4,16 @@ using APIorm.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace APIorm.Migrations.Compra
+namespace APIorm.Migrations
 {
     [DbContext(typeof(CompraContext))]
-    partial class CompraContextModelSnapshot : ModelSnapshot
+    [Migration("20200702230936_initialCreate")]
+    partial class initialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,6 +53,11 @@ namespace APIorm.Migrations.Compra
 
             modelBuilder.Entity("APIorm.Models.ItensCompra", b =>
                 {
+                    b.Property<long>("IdItemCompra")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<long>("IdCompra")
                         .HasColumnType("bigint");
 
@@ -66,7 +73,9 @@ namespace APIorm.Migrations.Compra
                     b.Property<double>("ValorUnit")
                         .HasColumnType("float");
 
-                    b.HasKey("IdCompra");
+                    b.HasKey("IdItemCompra");
+
+                    b.HasIndex("IdCompra");
 
                     b.HasIndex("IdProduto");
 
@@ -91,7 +100,7 @@ namespace APIorm.Migrations.Compra
 
                     b.HasKey("IdProduto");
 
-                    b.ToTable("Produto");
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("APIorm.Models.ItensCompra", b =>

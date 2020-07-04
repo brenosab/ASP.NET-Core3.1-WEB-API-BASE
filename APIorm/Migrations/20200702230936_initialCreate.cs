@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace APIorm.Migrations.Compra
+namespace APIorm.Migrations
 {
-    public partial class updateCompraTable : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,7 @@ namespace APIorm.Migrations.Compra
                 });
 
             migrationBuilder.CreateTable(
-                name: "Produto",
+                name: "Produtos",
                 columns: table => new
                 {
                     IdProduto = table.Column<long>(nullable: false)
@@ -37,13 +37,15 @@ namespace APIorm.Migrations.Compra
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Produto", x => x.IdProduto);
+                    table.PrimaryKey("PK_Produtos", x => x.IdProduto);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ItensCompras",
                 columns: table => new
                 {
+                    IdItemCompra = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdCompra = table.Column<long>(nullable: false),
                     IdProduto = table.Column<long>(nullable: false),
                     ValorUnit = table.Column<double>(nullable: false),
@@ -52,7 +54,7 @@ namespace APIorm.Migrations.Compra
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItensCompras", x => x.IdCompra);
+                    table.PrimaryKey("PK_ItensCompras", x => x.IdItemCompra);
                     table.ForeignKey(
                         name: "FK_ItensCompras_Compras_IdCompra",
                         column: x => x.IdCompra,
@@ -60,12 +62,17 @@ namespace APIorm.Migrations.Compra
                         principalColumn: "IdCompra",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ItensCompras_Produto_IdProduto",
+                        name: "FK_ItensCompras_Produtos_IdProduto",
                         column: x => x.IdProduto,
-                        principalTable: "Produto",
+                        principalTable: "Produtos",
                         principalColumn: "IdProduto",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItensCompras_IdCompra",
+                table: "ItensCompras",
+                column: "IdCompra");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItensCompras_IdProduto",
@@ -82,7 +89,7 @@ namespace APIorm.Migrations.Compra
                 name: "Compras");
 
             migrationBuilder.DropTable(
-                name: "Produto");
+                name: "Produtos");
         }
     }
 }

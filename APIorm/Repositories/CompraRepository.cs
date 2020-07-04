@@ -18,21 +18,29 @@ namespace APIorm.Repositories
             _context = context;
         }
 
-
-
         public Compra Get(long id)
         {
             try
             {
                 //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+                var compra = _context.Compras
+                   .Select(b => b)
+                   .Where(b => b.IdCompra == id)
+                   .SingleOrDefault();
 
-                var produto = _context.Compras
-                    .Select(b => b)
-                    .Where(b => b.IdCompra == id)
-                    .SingleOrDefault();
+                compra.ItensCompra = _context.ItensCompras
+                     .Select(i => i)
+                     .Where(i => i.IdCompra == id)
+                     .ToList();              
+                
+                foreach(ItensCompra itensCompra in compra.ItensCompra)
+                {
+                    itensCompra.Compra = null;
+                    itensCompra.Produto = null;
+                }
                 //if (produto == null) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado"); }
 
-                return produto;
+                return compra;
             }
             catch (Exception e)
             {
@@ -45,8 +53,22 @@ namespace APIorm.Repositories
             try
             {
                 //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+                var compras = await _context.Compras.ToListAsync();
+                foreach(Compra compra in compras)
+                {
+                    compra.ItensCompra = _context.ItensCompras
+                        .Select(i => i)
+                        .Where(i => i.IdCompra == compra.IdCompra)
+                        .ToList();
 
-                return await _context.Compras.ToListAsync();
+                    foreach (ItensCompra itensCompra in compra.ItensCompra)
+                    {
+                        itensCompra.Compra = null;
+                        itensCompra.Produto = null;
+                    }
+                }
+
+                return compras;
             }
             catch (Exception e)
             {

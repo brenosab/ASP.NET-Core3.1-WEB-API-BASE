@@ -10,13 +10,13 @@ namespace APIorm.Models.Context
 
         }
         public DbSet<Produto> Produtos { get; set; }
-       
+       /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Produto>()
                 .HasKey(p => p.IdProduto);
 
-            /*.HasData(
+                .HasData(
                 new Produto
                 {
                     IdProduto = 1,
@@ -32,8 +32,8 @@ namespace APIorm.Models.Context
                     Codigo = 22
                 }
             )
-            */
-        }
+            
+        }*/
 
     }
 }

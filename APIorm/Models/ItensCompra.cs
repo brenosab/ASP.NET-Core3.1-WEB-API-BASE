@@ -5,14 +5,16 @@ namespace APIorm.Models
 {
     public class ItensCompra
     {
-        [Key ]
+        [Key]
+        public long IdItemCompra { get; set; }
+        [ForeignKey("Compra")]
         public long IdCompra { get; set; }
+        [ForeignKey("Produto")]
         public long IdProduto { get; set; }
         public double ValorUnit { get; set; }
         public int Quantidade { get; set; }
         public double ValorTotal { get; set; }
-        public Produto Produto { get; set; }
         public Compra Compra { get; set; }
-
+        public Produto Produto { get; set; }
     }
 }

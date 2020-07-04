@@ -13,8 +13,8 @@ namespace APIorm.Repositories
 {
     public class ProdutoRepository : IProdutoRepository
     {
-        private readonly ProdutoContext _context;
-        public ProdutoRepository(ProdutoContext context)
+        private readonly CompraContext _context;
+        public ProdutoRepository(CompraContext context)
         {
             _context = context;
         }
