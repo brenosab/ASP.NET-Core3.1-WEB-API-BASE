@@ -9,7 +9,7 @@ namespace APIorm.Repositories.Interfaces
     {
         Task<IEnumerable<Compra>> GetAll();
         Compra Get(long id);
-        Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<int> idList);
+        Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList);
         Task<string> PutCompra(long id, Compra compra);
         Task<string> PostCompra(Compra compra);
         Task<string> PostCompraList(IEnumerable<Compra> compraList);

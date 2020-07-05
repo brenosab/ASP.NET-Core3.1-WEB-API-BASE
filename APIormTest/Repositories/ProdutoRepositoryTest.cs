@@ -39,7 +39,7 @@ namespace APIormTest
         [DataRow(2)]
         public void Get_Codigo_Nao_Existente(int codigo)
         {
-            Assert.ThrowsException<ProdutoException>(() => _repository.Get(codigo));
+            Assert.ThrowsException<ApiException>(() => _repository.Get(codigo));
         }
 
         [TestMethod]

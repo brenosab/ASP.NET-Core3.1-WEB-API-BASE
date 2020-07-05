@@ -2,9 +2,9 @@
 
 namespace APIorm.Exceptions
 {
-    public class ProdutoException : Exception
+    public class ApiException : Exception
     {
-        public enum ProdutoExceptionReason
+        public enum ApiExceptionReason
         {
             CONNECTION_NOT_COMPLETED,
             DISCONNECTION_NOT_COMPLETED,
@@ -16,29 +16,31 @@ namespace APIorm.Exceptions
             INVALID_METER_RESPONSE,
 
             PRODUTO_NAO_ENCONTRADO,
+            COMPRA_NAO_ENCONTRADA,
+
             CODIGO_INVALIDO,
             DB_CONNECTION_NOT_COMPLETED,
             DB_DISCONNECTION_NOT_COMPLETED,
         }
 
-        private readonly ProdutoExceptionReason[] reason;
+        private readonly ApiExceptionReason[] reason;
 
-        public ProdutoException(ProdutoExceptionReason reason)
+        public ApiException(ApiExceptionReason reason)
         {
-            this.reason = new ProdutoExceptionReason[] { reason };
+            this.reason = new ApiExceptionReason[] { reason };
         }
 
-        public ProdutoException(ProdutoExceptionReason[] reasons)
+        public ApiException(ApiExceptionReason[] reasons)
         {
             this.reason = reasons;
         }
 
-        public ProdutoException(ProdutoExceptionReason reason, string message) : base(message)
+        public ApiException(ApiExceptionReason reason, string message) : base(message)
         {
-            this.reason = new ProdutoExceptionReason[] { reason };
+            this.reason = new ApiExceptionReason[] { reason };
         }
 
-        public ProdutoException(ProdutoExceptionReason[] reasons, string message) : base(message)
+        public ApiException(ApiExceptionReason[] reasons, string message) : base(message)
         {
             this.reason = reasons;
         }
@@ -46,7 +48,7 @@ namespace APIorm.Exceptions
         /// <summary>
         /// Retrieves the reason of the exception </summary>
         /// <returns> A MALExceptionReason </returns>
-        public ProdutoExceptionReason[] getReason()
+        public ApiExceptionReason[] getReason()
         {
             return reason;
         }

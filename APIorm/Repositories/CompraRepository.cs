@@ -1,4 +1,5 @@
-﻿using APIorm.Models;
+﻿using APIorm.Exceptions;
+using APIorm.Models;
 using APIorm.Models.Context;
 using APIorm.Models.Interface;
 using APIorm.Repositories.Interfaces;
@@ -22,7 +23,7 @@ namespace APIorm.Repositories
         {
             try
             {
-                //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
                 var compra = _context.Compras
                    .Select(b => b)
                    .Where(b => b.IdCompra == id)
@@ -38,7 +39,8 @@ namespace APIorm.Repositories
                     itensCompra.Compra = null;
                     itensCompra.Produto = null;
                 }
-                //if (produto == null) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado"); }
+                
+                if (compra == null) { throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrada"); }
 
                 return compra;
             }
@@ -52,7 +54,7 @@ namespace APIorm.Repositories
         {
             try
             {
-                //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
                 var compras = await _context.Compras.ToListAsync();
                 foreach(Compra compra in compras)
                 {
@@ -60,7 +62,7 @@ namespace APIorm.Repositories
                         .Select(i => i)
                         .Where(i => i.IdCompra == compra.IdCompra)
                         .ToList();
-
+                    
                     foreach (ItensCompra itensCompra in compra.ItensCompra)
                     {
                         itensCompra.Compra = null;
@@ -76,23 +78,35 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<int> idList)
-        {
-            throw new NotImplementedException();
-            /*
+        public async Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList)
+        {            
             try
             {
-                //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
-
+                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+                
                 List<Erro> erros = new List<Erro>() { };
-
+                
                 var compras = await _context.Compras
                     .Select(b => b)
-                    .Where(b => idList.Contains(b.IdLoja)).ToListAsync();
-
-                foreach (int id in idList)
+                    .Where(b => idList.Contains(b.IdCompra)).ToListAsync();                
+                
+                foreach (Compra compra in compras)
                 {
-                    //if (produtos.Where(b => b.IdLoja == id).FirstOrDefault() == null) { erros.Add(new Erro { Id = id, Mensagem = "Produto não encontrado" }); }
+                    compra.ItensCompra = _context.ItensCompras
+                   .Select(i => i)
+                   .Where(i => i.IdCompra == compra.IdCompra)
+                   .ToList();
+
+                    foreach (ItensCompra itensCompra in compra.ItensCompra)
+                    {
+                        itensCompra.Compra = null;
+                        itensCompra.Produto = null;
+                    }
+                }
+                
+                foreach (long id in idList)
+                {
+                    if (compras.Where(b => b.IdCompra == id).FirstOrDefault() == null) { erros.Add(new Erro { Id = int.Parse(id.ToString()), Mensagem = "Compra não encontrada" }); }
                 }
                 if (erros.Any()) return new ResponseCluster<IEnumerable<Compra>>() { objValue = compras, erros = erros };
 
@@ -102,14 +116,13 @@ namespace APIorm.Repositories
             {
                 throw e;
             }
-            */
         }
 
         public async Task<string> PutCompra(long id, Compra compra)
         {
             try
             {
-                //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
                 // ITENS
                 var itens = await _context.ItensCompras
@@ -118,9 +131,7 @@ namespace APIorm.Repositories
                 .ToListAsync();
 
                 _context.ItensCompras.RemoveRange(itens);
-
                 _context.ItensCompras.AddRange(compra.ItensCompra);
-
                 _context.Entry(compra).State = EntityState.Modified;
 
                 try
@@ -131,7 +142,7 @@ namespace APIorm.Repositories
                 {
                     if (!CompraExists(id))
                     {
-                        throw new Exception("Compra não encontrado.");
+                        throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrado.");
                     }
                     else
                     {
@@ -150,14 +161,9 @@ namespace APIorm.Repositories
         {
             try
             {
-                //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
                 _context.Compras.Add(compra);
                 await _context.SaveChangesAsync();
-
-                //var id = compra.IdCompra;
-
-                //_context.ItensCompras.AddRange(compra.ItensCompra);
-                //await _context.SaveChangesAsync();
                 return string.Empty;
             }
             catch (Exception e)
@@ -167,19 +173,14 @@ namespace APIorm.Repositories
         }
         public async Task<string> PostCompraList(IEnumerable<Compra> compraList)
         {
-            throw new NotImplementedException();
-            /*
             try
             {
-                //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
-                foreach(Compra compra in compraList)
+                foreach (Compra compra in compraList)
                 {
                     _context.Compras.Add(compra);
-                    _context.ItensCompras.AddRange(compra.ItensCompra);
-                    //await _context.SaveChangesAsync();
                 }
-                //_context.Compras.AddRange(compraList);
                 await _context.SaveChangesAsync();
 
                 return string.Empty;
@@ -188,14 +189,13 @@ namespace APIorm.Repositories
             {
                 throw e;
             }
-            */
         }
 
         public async Task<string> DeleteCompra(long id)
         {
             try
             {
-                //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); 
+                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
                 var compra = await _context.Compras.FindAsync(id);
                 var itens = await _context.ItensCompras
                     .Select(i => i)
@@ -204,9 +204,8 @@ namespace APIorm.Repositories
 
                 if (compra == null)
                 {
-                    //throw new Exception("Produto não encontrado.");
+                    throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrado.");
                 }
-
                 _context.ItensCompras.RemoveRange(itens);
                 _context.Compras.Remove(compra);
                 await _context.SaveChangesAsync();
@@ -223,6 +222,5 @@ namespace APIorm.Repositories
         {
             return _context.Compras.Any(e => e.IdCompra == id);
         }
-
     }
 }

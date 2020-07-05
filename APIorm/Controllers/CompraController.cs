@@ -39,7 +39,7 @@ namespace APIorm.Controllers
         }
         [Route("[Action]")]
         [HttpPost]
-        public async Task<IActionResult> GetCompraList(IEnumerable<int> idList)
+        public async Task<IActionResult> GetCompraList(IEnumerable<long> idList)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace APIorm.Controllers
         }
         [Route("[Action]")]
         [HttpPost]
-        public async Task<IActionResult> PostProdutoList(IEnumerable<Compra> compraList)
+        public async Task<IActionResult> PostCompraList(IEnumerable<Compra> compraList)
         {
             try
             {

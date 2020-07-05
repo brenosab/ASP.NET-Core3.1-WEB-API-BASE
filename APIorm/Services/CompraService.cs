@@ -38,7 +38,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<int> idList)
+        public Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList)
         {
             try
             {
