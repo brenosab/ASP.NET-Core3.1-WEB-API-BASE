@@ -29,6 +29,8 @@ namespace APIorm.Repositories
                    .Where(b => b.IdCompra == id)
                    .SingleOrDefault();
 
+                if (compra == null) { throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrada"); }
+
                 compra.ItensCompra = _context.ItensCompras
                      .Select(i => i)
                      .Where(i => i.IdCompra == id)
@@ -40,8 +42,6 @@ namespace APIorm.Repositories
                     itensCompra.Produto = null;
                 }
                 
-                if (compra == null) { throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrada"); }
-
                 return compra;
             }
             catch (Exception e)
@@ -88,8 +88,14 @@ namespace APIorm.Repositories
                 
                 var compras = await _context.Compras
                     .Select(b => b)
-                    .Where(b => idList.Contains(b.IdCompra)).ToListAsync();                
-                
+                    .Where(b => idList.Contains(b.IdCompra)).ToListAsync();
+
+                foreach (long id in idList)
+                {
+                    if (compras.Where(b => b.IdCompra == id).FirstOrDefault() == null) { erros.Add(new Erro { Id = int.Parse(id.ToString()), Mensagem = "Compra não encontrada" }); }
+                }
+                if (erros.Any()) return new ResponseCluster<IEnumerable<Compra>>() { objValue = compras, erros = erros };
+
                 foreach (Compra compra in compras)
                 {
                     compra.ItensCompra = _context.ItensCompras
@@ -104,12 +110,6 @@ namespace APIorm.Repositories
                     }
                 }
                 
-                foreach (long id in idList)
-                {
-                    if (compras.Where(b => b.IdCompra == id).FirstOrDefault() == null) { erros.Add(new Erro { Id = int.Parse(id.ToString()), Mensagem = "Compra não encontrada" }); }
-                }
-                if (erros.Any()) return new ResponseCluster<IEnumerable<Compra>>() { objValue = compras, erros = erros };
-
                 return new ResponseCluster<IEnumerable<Compra>>() { objValue = compras };
             }
             catch (Exception e)
@@ -142,7 +142,7 @@ namespace APIorm.Repositories
                 {
                     if (!CompraExists(id))
                     {
-                        throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrado.");
+                        throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrada");
                     }
                     else
                     {
@@ -204,7 +204,7 @@ namespace APIorm.Repositories
 
                 if (compra == null)
                 {
-                    throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrado.");
+                    throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrada");
                 }
                 _context.ItensCompras.RemoveRange(itens);
                 _context.Compras.Remove(compra);

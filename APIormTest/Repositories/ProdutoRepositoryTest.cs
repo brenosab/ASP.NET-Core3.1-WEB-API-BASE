@@ -16,9 +16,9 @@ namespace APIormTest
         private readonly IProdutoRepository _repository;
         public ProdutoRepositoryTest()
         {
-            var builder = new DbContextOptionsBuilder<ProdutoContext>()
+            var builder = new DbContextOptionsBuilder<CompraContext>()
                                 .UseSqlServer("Server=DESKTOP-BBFF0L4\\SQLEXPRESS;Database=ESTUDOS;Trusted_Connection=True;MultipleActiveResultSets=true");                
-            _repository = new ProdutoRepository(new ProdutoContext(builder.Options));
+            _repository = new ProdutoRepository(new CompraContext(builder.Options));
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace APIormTest
         [TestMethod]
         [DataRow(99)]
         [DataRow(19)]
-        [DataRow(2)]
+        [DataRow(5)]
         public void Get_Codigo_Nao_Existente(int codigo)
         {
             Assert.ThrowsException<ApiException>(() => _repository.Get(codigo));
@@ -68,7 +68,7 @@ namespace APIormTest
         }
 
         [TestMethod]
-        [DataRow(new int[] { 3,350, 214, 412, 100 })]
+        [DataRow(new int[] { 3,350, 1, 412, 30 })]
         public void GetList_Alguns_Produtos_Validos_E_Outros_Nao(IEnumerable<int> codigoList)
         {
             var result = _repository.GetProdutoList(codigoList);
@@ -80,8 +80,8 @@ namespace APIormTest
             Assert.IsNotNull(result.Result.erros.Where(erro => erro.Id == 412 && erro.Mensagem == "Produto não encontrado").FirstOrDefault());
 
             Assert.IsNotNull(result.Result.objValue.Where(produto => produto.Codigo == 3).FirstOrDefault());
-            Assert.IsNotNull(result.Result.objValue.Where(produto => produto.Codigo == 214).FirstOrDefault());
-            Assert.IsNotNull(result.Result.objValue.Where(produto => produto.Codigo == 100).FirstOrDefault());
+            Assert.IsNotNull(result.Result.objValue.Where(produto => produto.Codigo == 1).FirstOrDefault());
+            Assert.IsNotNull(result.Result.objValue.Where(produto => produto.Codigo == 30).FirstOrDefault());
         }
     }
 }
