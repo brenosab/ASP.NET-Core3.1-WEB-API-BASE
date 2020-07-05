@@ -78,6 +78,8 @@ namespace APIorm.Repositories
 
         public async Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<int> idList)
         {
+            throw new NotImplementedException();
+            /*
             try
             {
                 //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
@@ -100,6 +102,7 @@ namespace APIorm.Repositories
             {
                 throw e;
             }
+            */
         }
 
         public async Task<string> PutCompra(long id, Compra compra)
@@ -107,6 +110,16 @@ namespace APIorm.Repositories
             try
             {
                 //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+
+                // ITENS
+                var itens = await _context.ItensCompras
+                .Select(i => i)
+                .Where(i => i.IdCompra == id)
+                .ToListAsync();
+
+                _context.ItensCompras.RemoveRange(itens);
+
+                _context.ItensCompras.AddRange(compra.ItensCompra);
 
                 _context.Entry(compra).State = EntityState.Modified;
 
@@ -118,7 +131,7 @@ namespace APIorm.Repositories
                 {
                     if (!CompraExists(id))
                     {
-                        throw new Exception("Produto não encontrado.");
+                        throw new Exception("Compra não encontrado.");
                     }
                     else
                     {
@@ -138,9 +151,13 @@ namespace APIorm.Repositories
             try
             {
                 //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
-
                 _context.Compras.Add(compra);
                 await _context.SaveChangesAsync();
+
+                //var id = compra.IdCompra;
+
+                //_context.ItensCompras.AddRange(compra.ItensCompra);
+                //await _context.SaveChangesAsync();
                 return string.Empty;
             }
             catch (Exception e)
@@ -150,11 +167,19 @@ namespace APIorm.Repositories
         }
         public async Task<string> PostCompraList(IEnumerable<Compra> compraList)
         {
+            throw new NotImplementedException();
+            /*
             try
             {
                 //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
-                _context.Compras.AddRange(compraList);
+                foreach(Compra compra in compraList)
+                {
+                    _context.Compras.Add(compra);
+                    _context.ItensCompras.AddRange(compra.ItensCompra);
+                    //await _context.SaveChangesAsync();
+                }
+                //_context.Compras.AddRange(compraList);
                 await _context.SaveChangesAsync();
 
                 return string.Empty;
@@ -163,20 +188,27 @@ namespace APIorm.Repositories
             {
                 throw e;
             }
+            */
         }
 
         public async Task<string> DeleteCompra(long id)
         {
             try
             {
-                //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+                //if (!_context.Database.CanConnect()) { throw new ProdutoException(ProdutoException.ProdutoExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); 
+                var compra = await _context.Compras.FindAsync(id);
+                var itens = await _context.ItensCompras
+                    .Select(i => i)
+                    .Where(i => i.IdCompra == id)
+                    .ToListAsync();
 
-                var produto = await _context.Compras.FindAsync(id);
-                if (produto == null)
+                if (compra == null)
                 {
                     //throw new Exception("Produto não encontrado.");
                 }
-                _context.Compras.Remove(produto);
+
+                _context.ItensCompras.RemoveRange(itens);
+                _context.Compras.Remove(compra);
                 await _context.SaveChangesAsync();
 
                 return string.Empty;
