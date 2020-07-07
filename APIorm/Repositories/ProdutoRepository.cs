@@ -8,12 +8,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace APIorm.Repositories
 {
     public class ProdutoRepository : IProdutoRepository
     {
         private readonly CompraContext _context;
+        private const int DefaultPageIndex = 1;
+        private const int DefaultPageSize = 10;
+
         public ProdutoRepository(CompraContext context)
         {
             _context = context;
@@ -39,15 +43,21 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<IEnumerable<Produto>> GetAll()
+        public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
         {
             try
             {
                 if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
-                return await _context.Produtos.ToListAsync();
+                pageSize = pageSize == 0 ? DefaultPageSize : pageSize;
+                pageIndex = pageIndex == 0 ? DefaultPageIndex : pageIndex;
+
+                var produtos = await _context.Produtos.ToPagedListAsync(pageIndex, pageSize);
+                var count = produtos.TotalItemCount;
+
+                return new ResponseCluster<IEnumerable<Produto>>() { objValue = produtos, totalItemCount = count };
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }

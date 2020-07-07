@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using APIorm.Models;
 using APIorm.Services.Interfaces;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace APIorm.Controllers
 {
@@ -17,13 +18,18 @@ namespace APIorm.Controllers
             _service = service;
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet]
-        public async Task<IActionResult> GetCompras()
+        public async Task<IActionResult> GetCompras(int pageIndex, int pageSize)
         {
-            return Ok(await _service.GetAll());
+            var compras = await _service.GetAll(pageIndex, pageSize);
+            return Ok(new { compras = compras.objValue, compras.totalItemCount });
         }
-        
+
         // GET: api/Compra/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet("{id}")]
         public IActionResult GetCompra(long id)
         {
@@ -37,6 +43,9 @@ namespace APIorm.Controllers
                 return BadRequest(new { msg = err });
             }
         }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [Route("[Action]")]
         [HttpPost]
         public async Task<IActionResult> GetCompraList(IEnumerable<long> idList)
@@ -58,6 +67,8 @@ namespace APIorm.Controllers
         }
 
         // PUT: api/Compra/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompra(long id, Compra compra)
         {
@@ -73,6 +84,8 @@ namespace APIorm.Controllers
         }
 
         // POST: api/Compra
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<IActionResult> PostCompra(Compra compra)
         {
@@ -86,6 +99,9 @@ namespace APIorm.Controllers
                 return BadRequest(new { msg = err });
             }
         }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [Route("[Action]")]
         [HttpPost]
         public async Task<IActionResult> PostCompraList(IEnumerable<Compra> compraList)
@@ -102,6 +118,8 @@ namespace APIorm.Controllers
         }
 
         // DELETE: api/Compra/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompra(long id)
         {

@@ -16,11 +16,11 @@ namespace APIorm.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Produto>> GetAll()
+        public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
         {
             try
             {
-                return await _repository.GetAll();
+                return await _repository.GetAll(pageIndex, pageSize);
             }
             catch (Exception e)
             {

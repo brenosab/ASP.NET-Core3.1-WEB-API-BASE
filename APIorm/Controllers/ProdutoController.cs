@@ -4,6 +4,7 @@ using APIorm.Services.Interfaces;
 using System;
 using APIorm.Models;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace APIorm.Controllers
 {
@@ -17,12 +18,17 @@ namespace APIorm.Controllers
             _service = service;
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet]
-        public async Task<IActionResult> GetProdutos()
+        public async Task<IActionResult> GetProdutos(int pageIndex, int pageSize)
         {
-            return Ok(await _service.GetAll());
+            var produtos = await _service.GetAll(pageIndex, pageSize);
+            return Ok(new { produtos = produtos.objValue, produtos.totalItemCount });
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet("{id}")]
         public IActionResult GetProduto(int id)
         {
@@ -37,6 +43,8 @@ namespace APIorm.Controllers
             }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [Route("[Action]")]
         [HttpPost]
         public async Task<IActionResult> GetProdutoList(IEnumerable<int> idList)
@@ -57,6 +65,8 @@ namespace APIorm.Controllers
             }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduto(long id, Produto produto)
         {
@@ -71,6 +81,8 @@ namespace APIorm.Controllers
             }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<IActionResult> PostProduto(Produto produto)
         {
@@ -85,6 +97,8 @@ namespace APIorm.Controllers
             }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [Route("[Action]")]
         [HttpPost]
         public async Task<IActionResult> PostProdutoList(IEnumerable<Produto> produtoList)
@@ -100,6 +114,8 @@ namespace APIorm.Controllers
             }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduto(long id)
         {

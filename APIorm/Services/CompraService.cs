@@ -16,17 +16,18 @@ namespace APIorm.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Compra>> GetAll()
+        public async Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize)
         {
             try
             {
-                return await _repository.GetAll();
+                return await _repository.GetAll(pageIndex, pageSize);
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
+
         public Compra Get(long id)
         {
             try
@@ -38,6 +39,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
+
         public Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList)
         {
             try
@@ -49,7 +51,6 @@ namespace APIorm.Services
                 throw e;
             }
         }
-
 
         public Task<string> PutCompra(long id, Compra compra)
         {

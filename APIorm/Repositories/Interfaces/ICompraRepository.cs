@@ -7,7 +7,7 @@ namespace APIorm.Repositories.Interfaces
 {
     public interface ICompraRepository
     {
-        Task<IEnumerable<Compra>> GetAll();
+        Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize);
         Compra Get(long id);
         Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList);
         Task<string> PutCompra(long id, Compra compra);
