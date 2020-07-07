@@ -27,7 +27,6 @@ namespace APIorm.Controllers
             return Ok(new { compras = compras.objValue, compras.totalItemCount });
         }
 
-        // GET: api/Compra/5
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet("{id}")]
@@ -66,7 +65,6 @@ namespace APIorm.Controllers
             }
         }
 
-        // PUT: api/Compra/5
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPut("{id}")]
@@ -83,7 +81,6 @@ namespace APIorm.Controllers
             }
         }
 
-        // POST: api/Compra
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPost]
@@ -117,7 +114,6 @@ namespace APIorm.Controllers
             }
         }
 
-        // DELETE: api/Compra/5
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpDelete("{id}")]
