@@ -23,11 +23,10 @@ namespace APIorm
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-        {
-            /*
-            services.AddDbContext<ProdutoContext>(options =>
+        {           
+            services.AddDbContext<UsuarioContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            */
+            
             services.AddDbContext<CompraContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -44,6 +43,9 @@ namespace APIorm
 
             services.AddScoped<ICompraRepository, CompraRepository>();
             services.AddScoped<ICompraService, CompraService>();
+
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
