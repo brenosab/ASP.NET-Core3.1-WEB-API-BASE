@@ -36,7 +36,8 @@ namespace APIorm.Repositories
                     .Select(b => b)
                     .Where(b => b.IdUsuario == id)
                     .SingleOrDefault();
-                //if(produto == null) { throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado"); }
+
+                if(usuario == null) { throw new ApiException(ApiException.ApiExceptionReason.USUARIO_NAO_ENCONTRADO, "Produto não encontrado"); }
 
                 return usuario;
             }
@@ -71,22 +72,6 @@ namespace APIorm.Repositories
             try
             {
                 throw new NotImplementedException();
-                /*
-                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
-
-                List<Erro> erros = new List<Erro>() { };
-                
-                var produtos = await _context.Usuarios
-                    .Select(b => b)
-                    .Where(b => idList.Contains(b.IdUsuario)).ToListAsync();
-                
-                foreach(int id in idList)
-                {                    
-                    if(produtos.Where(b => b.Codigo == id).FirstOrDefault() == null) { erros.Add(new Erro { Id = id, Mensagem = "Produto não encontrado" }); }
-                }
-                if (erros.Any()) return new ResponseCluster<IEnumerable<Produto>>() { objValue = produtos, erros = erros };
-
-                return new ResponseCluster<IEnumerable<Produto>>() { objValue = produtos };*/
             }
             catch (Exception e)
             {
@@ -110,7 +95,7 @@ namespace APIorm.Repositories
                 {
                     if (!UsuarioExists(id))
                     {
-                        throw new Exception("Produto não encontrado.");
+                        throw new Exception("Usuário não encontrado.");
                     }
                     else
                     {
@@ -143,7 +128,16 @@ namespace APIorm.Repositories
                     Email = usuario.Email,
                     Sexo = usuario.Sexo
                 };
-                
+
+                var userExist =_context.Usuarios
+                    .Select(b => b)
+                    .Where(b => b.NomeLogin == usuario.NomeLogin)
+                    .SingleOrDefault();
+                if (userExist != null)
+                {
+                    throw new Exception("Login do usuário já existente.");
+                }
+
                 _context.Usuarios.Add(usuarioModel);
                 await _context.SaveChangesAsync();
                 return string.Empty;
@@ -179,7 +173,7 @@ namespace APIorm.Repositories
                 var usuario = await _context.Usuarios.FindAsync(id);
                 if (usuario == null)
                 {
-                    throw new Exception("Produto não encontrado.");
+                    throw new Exception("Usuário não encontrado.");
                 }
                 _context.Usuarios.Remove(usuario);
                 await _context.SaveChangesAsync();
