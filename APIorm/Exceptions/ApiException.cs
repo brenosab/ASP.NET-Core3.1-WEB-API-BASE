@@ -17,6 +17,7 @@ namespace APIorm.Exceptions
 
             PRODUTO_NAO_ENCONTRADO,
             COMPRA_NAO_ENCONTRADA,
+            USUARIO_NAO_ENCONTRADO,
 
             CODIGO_INVALIDO,
             DB_CONNECTION_NOT_COMPLETED,
