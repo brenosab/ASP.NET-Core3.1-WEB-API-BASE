@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIorm.Models
@@ -14,6 +15,7 @@ namespace APIorm.Models
         public string Email { get; set; }
         public string Sexo { get; set; }
  
+        public List<Compra> Compra { get; set; }
         // cidade - bairro - rua - numero
         //
     }

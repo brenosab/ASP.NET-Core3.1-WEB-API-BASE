@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace APIorm.Repositories.Interfaces
 {
-    public interface IProdutoRepository
+    public interface IProdutoRepository : IRepository<Produto>
     {
-        Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize);
+        //Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize);
         Produto Get(int id);
         Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList);
 

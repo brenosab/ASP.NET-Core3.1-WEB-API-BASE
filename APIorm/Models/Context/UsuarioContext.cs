@@ -9,7 +9,7 @@ namespace APIorm.Models.Context
         {
 
         }
-        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
         /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

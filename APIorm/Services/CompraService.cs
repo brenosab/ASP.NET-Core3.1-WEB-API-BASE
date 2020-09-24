@@ -27,7 +27,6 @@ namespace APIorm.Services
                 throw e;
             }
         }
-
         public Compra Get(long id)
         {
             try
@@ -39,7 +38,6 @@ namespace APIorm.Services
                 throw e;
             }
         }
-
         public Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList)
         {
             try
@@ -51,7 +49,6 @@ namespace APIorm.Services
                 throw e;
             }
         }
-
         public Task<string> PutCompra(long id, Compra compra)
         {
             try

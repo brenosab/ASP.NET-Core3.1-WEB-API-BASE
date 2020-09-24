@@ -94,7 +94,6 @@ namespace APIorm.Services
                 throw e;
             }
         }
-
         public Task<bool> VerificaUsuario(string login, string senha)
         {
             try

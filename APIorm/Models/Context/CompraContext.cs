@@ -13,14 +13,19 @@ namespace APIorm.Models.Context
         public DbSet<ItensCompra> ItensCompras { get; set; }
         public DbSet<Produto> Produtos { get; set; }
 
-        /*
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Produto>()
                 .HasKey(p => p.IdProduto);
 
             modelBuilder.Entity<Compra>()
-              .HasKey(p => p.IdCompra);
+                .HasKey(p => p.IdCompra);
+
+            modelBuilder.Entity<Compra>()
+                .HasOne(p => p.Usuario)
+                .WithMany(b => b.Compra)
+                .HasForeignKey(p => p.UsuarioSolicitante);
 
             modelBuilder.Entity<ItensCompra>()
                 .HasOne(p => p.Compra)
@@ -33,7 +38,7 @@ namespace APIorm.Models.Context
                 .WithMany(b => b.ItensCompra)
                 .HasForeignKey(p => p.IdProduto);
                 
-        }*/
+        }
       
     }
 }

@@ -3,28 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace APIorm.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class AddUsuario : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Compras",
-                columns: table => new
-                {
-                    IdCompra = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdLoja = table.Column<int>(nullable: false),
-                    Data = table.Column<DateTime>(nullable: false),
-                    Valor = table.Column<double>(nullable: false),
-                    Quantidade = table.Column<int>(nullable: false),
-                    ObservacaoCompra = table.Column<string>(nullable: true),
-                    UsuarioSolicitante = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Compras", x => x.IdCompra);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Produtos",
                 columns: table => new
@@ -38,6 +20,48 @@ namespace APIorm.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Produtos", x => x.IdProduto);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuario",
+                columns: table => new
+                {
+                    IdUsuario = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(nullable: true),
+                    NomeLogin = table.Column<string>(nullable: true),
+                    SenhaLogin = table.Column<byte[]>(nullable: true),
+                    DataNascimento = table.Column<DateTime>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
+                    Sexo = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuario", x => x.IdUsuario);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Compras",
+                columns: table => new
+                {
+                    IdCompra = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdLoja = table.Column<int>(nullable: false),
+                    Data = table.Column<DateTime>(nullable: false),
+                    Valor = table.Column<double>(nullable: false),
+                    Quantidade = table.Column<int>(nullable: false),
+                    ObservacaoCompra = table.Column<string>(nullable: true),
+                    UsuarioSolicitante = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Compras", x => x.IdCompra);
+                    table.ForeignKey(
+                        name: "FK_Compras_Usuario_UsuarioSolicitante",
+                        column: x => x.UsuarioSolicitante,
+                        principalTable: "Usuario",
+                        principalColumn: "IdUsuario",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,6 +94,11 @@ namespace APIorm.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Compras_UsuarioSolicitante",
+                table: "Compras",
+                column: "UsuarioSolicitante");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ItensCompras_IdCompra",
                 table: "ItensCompras",
                 column: "IdCompra");
@@ -90,6 +119,9 @@ namespace APIorm.Migrations
 
             migrationBuilder.DropTable(
                 name: "Produtos");
+
+            migrationBuilder.DropTable(
+                name: "Usuario");
         }
     }
 }

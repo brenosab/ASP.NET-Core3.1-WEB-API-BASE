@@ -38,13 +38,15 @@ namespace APIorm.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioSolicitante")
-                        .HasColumnType("int");
+                    b.Property<long>("UsuarioSolicitante")
+                        .HasColumnType("bigint");
 
                     b.Property<double>("Valor")
                         .HasColumnType("float");
 
                     b.HasKey("IdCompra");
+
+                    b.HasIndex("UsuarioSolicitante");
 
                     b.ToTable("Compras");
                 });
@@ -99,6 +101,45 @@ namespace APIorm.Migrations
                     b.HasKey("IdProduto");
 
                     b.ToTable("Produtos");
+                });
+
+            modelBuilder.Entity("APIorm.Models.Usuario", b =>
+                {
+                    b.Property<long>("IdUsuario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeLogin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("SenhaLogin")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Sexo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdUsuario");
+
+                    b.ToTable("Usuario");
+                });
+
+            modelBuilder.Entity("APIorm.Models.Compra", b =>
+                {
+                    b.HasOne("APIorm.Models.Usuario", "Usuario")
+                        .WithMany("Compra")
+                        .HasForeignKey("UsuarioSolicitante")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("APIorm.Models.ItensCompra", b =>
