@@ -20,13 +20,21 @@ namespace APIorm.Controllers
             _service = service;
         }
 
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        //[HttpGet]
+        //public async Task<IActionResult> GetProdutos(int pageIndex, int pageSize)
+        //{
+        //    var produtos = await _service.GetAll(pageIndex, pageSize);
+        //    return Ok(new { produtos = produtos.objValue, produtos.totalItemCount });
+        //}
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet]
-        public async Task<IActionResult> GetProdutos(int pageIndex, int pageSize)
+        public IActionResult GetProdutos()
         {
-            var produtos = await _service.GetAll(pageIndex, pageSize);
-            return Ok(new { produtos = produtos.objValue, produtos.totalItemCount });
+            var produtos = _service.GetAll();
+            return Ok(produtos);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

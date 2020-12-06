@@ -23,7 +23,16 @@ namespace APIorm
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-        {           
+        {
+            services.AddCors(
+               options => options.AddPolicy(
+                   "AllowAll", p =>
+                   {
+                       p.AllowAnyOrigin();
+                       p.AllowAnyMethod();
+                       p.AllowAnyHeader();
+                   }));
+
             services.AddDbContext<UsuarioContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
@@ -38,6 +47,8 @@ namespace APIorm
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
 
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IProdutoService, ProdutoService>();
 
@@ -50,6 +61,9 @@ namespace APIorm
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("AllowAll");
+            app.UseStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -61,7 +75,6 @@ namespace APIorm
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
 
             app.UseRouting();
 
