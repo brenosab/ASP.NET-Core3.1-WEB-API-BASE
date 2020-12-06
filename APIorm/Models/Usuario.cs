@@ -14,9 +14,9 @@ namespace APIorm.Models
         public DateTime DataNascimento { get; set; }
         public string Email { get; set; }
         public string Sexo { get; set; }
- 
+        public string Cpf { get; set; }
+        public int TipoUsuario { get; set; }
+
         public List<Compra> Compra { get; set; }
-        // cidade - bairro - rua - numero
-        //
     }
 }

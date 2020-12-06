@@ -33,7 +33,9 @@ namespace APIorm.Migrations
                     SenhaLogin = table.Column<byte[]>(nullable: true),
                     DataNascimento = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: true),
-                    Sexo = table.Column<string>(nullable: true)
+                    Sexo = table.Column<string>(nullable: true),
+                    TipoUsuario = table.Column<int>(nullable: true),
+                    Cpf = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

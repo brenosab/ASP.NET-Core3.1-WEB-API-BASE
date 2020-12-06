@@ -8,7 +8,7 @@ namespace APIorm.Migrations.Usuario
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Usuarios",
+                name: "Usuario",
                 columns: table => new
                 {
                     IdUsuario = table.Column<long>(nullable: false)
@@ -18,18 +18,21 @@ namespace APIorm.Migrations.Usuario
                     SenhaLogin = table.Column<byte[]>(nullable: true),
                     DataNascimento = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: true),
-                    Sexo = table.Column<string>(nullable: true)
+                    Sexo = table.Column<string>(nullable: true),
+                    TipoUsuario = table.Column<int>(nullable: true),
+                    Cpf = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
                 });
         }
+        
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "Usuario");
         }
     }
 }

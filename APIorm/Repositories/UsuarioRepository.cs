@@ -115,18 +115,43 @@ namespace APIorm.Repositories
             {
                 if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
-                byte[] bytes = Encoding.UTF8.GetBytes(usuario.SenhaLogin);
-                var sha1 = SHA512.Create();
-                byte[] hashBytes = sha1.ComputeHash(bytes);
-                
-                Usuario usuarioModel = new Usuario() { 
-                    Nome = usuario.Nome,
-                    NomeLogin = usuario.NomeLogin,
-                    SenhaLogin = hashBytes,
-                    DataNascimento = usuario.DataNascimento,
-                    Email = usuario.Email,
-                    Sexo = usuario.Sexo
-                };
+                if(usuario.SenhaLogin != "" && usuario.SenhaLogin != null)
+                {
+                    byte[] bytes = Encoding.UTF8.GetBytes(usuario.SenhaLogin);
+                    var sha1 = SHA512.Create();
+                    byte[] hashBytes = sha1.ComputeHash(bytes);
+                    Usuario usuarioModel = new Usuario()
+                    {
+                        Nome = usuario.Nome,
+                        NomeLogin = usuario.NomeLogin,
+                        SenhaLogin = hashBytes,
+                        DataNascimento = usuario.DataNascimento,
+                        Email = usuario.Email,
+                        Sexo = usuario.Sexo,
+                        Cpf = usuario.Cpf,
+                        TipoUsuario = usuario.TipoUsuario
+                    };
+                    _context.Usuario.Add(usuarioModel);
+
+                }
+                else
+                {
+                    Usuario usuarioModel = new Usuario()
+                    {
+                        Nome = usuario.Nome,
+                        NomeLogin = usuario.NomeLogin,
+                        DataNascimento = usuario.DataNascimento,
+                        Email = usuario.Email,
+                        Sexo = usuario.Sexo,
+                        Cpf = usuario.Cpf,
+                        TipoUsuario = usuario.TipoUsuario
+                    };
+                    _context.Usuario.Add(usuarioModel);
+
+                }
+
+
+
 
                 var userExist =_context.Usuario
                     .Select(b => b)
@@ -137,7 +162,6 @@ namespace APIorm.Repositories
                     throw new Exception("Login do usuário já existente");
                 }
 
-                _context.Usuario.Add(usuarioModel);
                 await _context.SaveChangesAsync();
                 return string.Empty;
             }
