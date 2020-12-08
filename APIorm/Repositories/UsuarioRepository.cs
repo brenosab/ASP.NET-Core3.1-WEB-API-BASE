@@ -109,12 +109,12 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> PostUsuario(UsuarioViewModel usuario)
+        public async Task<Usuario> PostUsuario(UsuarioViewModel usuario)
         {
             try
             {
                 if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
-
+                Usuario _usuario = new Usuario();
                 if(usuario.SenhaLogin != "" && usuario.SenhaLogin != null)
                 {
                     byte[] bytes = Encoding.UTF8.GetBytes(usuario.SenhaLogin);
@@ -132,7 +132,6 @@ namespace APIorm.Repositories
                         TipoUsuario = usuario.TipoUsuario
                     };
                     _context.Usuario.Add(usuarioModel);
-
                 }
                 else
                 {
@@ -147,15 +146,11 @@ namespace APIorm.Repositories
                         TipoUsuario = usuario.TipoUsuario
                     };
                     _context.Usuario.Add(usuarioModel);
-
+                    _usuario = usuarioModel;
                 }
-
-
-
-
                 var userExist =_context.Usuario
                     .Select(b => b)
-                    .Where(b => b.NomeLogin == usuario.NomeLogin)
+                    .Where(b => b.Nome == usuario.Nome)
                     .SingleOrDefault();
                 if (userExist != null)
                 {
@@ -163,7 +158,7 @@ namespace APIorm.Repositories
                 }
 
                 await _context.SaveChangesAsync();
-                return string.Empty;
+                return _usuario;
             }
             catch (Exception e)
             {
@@ -187,7 +182,7 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> DeleteUsuario(long id)
+        public async Task<Usuario> DeleteUsuario(long id)
         {
             try
             {
@@ -201,7 +196,7 @@ namespace APIorm.Repositories
                 _context.Usuario.Remove(usuario);
                 await _context.SaveChangesAsync();
 
-                return string.Empty;
+                return usuario;
             }
             catch(Exception e)
             {
