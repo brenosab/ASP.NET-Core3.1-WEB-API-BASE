@@ -61,7 +61,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<string> PostUsuario(UsuarioViewModel usuario)
+        public Task<Usuario> PostUsuario(UsuarioViewModel usuario)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<string> DeleteUsuario(long id)
+        public Task<Usuario> DeleteUsuario(long id)
         {
             try
             {

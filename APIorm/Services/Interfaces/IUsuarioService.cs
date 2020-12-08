@@ -12,9 +12,9 @@ namespace APIorm.Services.Interfaces
         Usuario Get(int id);
         Task<ResponseCluster<IEnumerable<Usuario>>> GetUsuarioList(IEnumerable<int> idList);
         Task<string> PutUsuario(long id, Usuario usuario);
-        Task<string> PostUsuario(UsuarioViewModel usuario);
+        Task<Usuario> PostUsuario(UsuarioViewModel usuario);
         Task<string> PostUsuarioList(IEnumerable<Usuario> usuarioList);
-        Task<string> DeleteUsuario(long id);
+        Task<Usuario> DeleteUsuario(long id);
         Task<bool> VerificaUsuario(string login, string senha);
     }
 }

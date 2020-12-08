@@ -97,7 +97,9 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(await _service.PostUsuario(usuario));
+                var result = await _service.PostUsuario(usuario);
+                return CreatedAtAction("GetUsuario", new { id = usuario.IdUsuario }, result);
+                //return Ok(await _service.PostUsuario(usuario));
             }
             catch (Exception e)
             {
