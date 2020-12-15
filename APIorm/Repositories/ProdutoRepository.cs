@@ -31,7 +31,7 @@ namespace APIorm.Repositories
 
                 var produto = _context.Produtos
                     .Select(b => b)
-                    .Where(b => b.Codigo == id)
+                    .Where(b => b.IdProduto == id)
                     .SingleOrDefault();
                 if(produto == null) { throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado"); }
 
@@ -120,22 +120,20 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> PostProduto(Produto produto)
+        public async Task<Produto> PostProduto(Produto produto)
         {
-            throw new NotImplementedException();
-            /*
             try
             {
                 if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
                 _context.Produtos.Add(produto);
                 await _context.SaveChangesAsync();
-                return string.Empty;
+                return produto;
             }
             catch (Exception e)
             {
                 throw e;
-            }*/
+            }
         }
         public async Task<string> PostProdutoList(IEnumerable<Produto> produtoList)
         {

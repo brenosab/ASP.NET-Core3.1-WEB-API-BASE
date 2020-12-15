@@ -74,7 +74,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<string> PostProduto(Produto produto)
+        public Task<Produto> PostProduto(Produto produto)
         {
             try
             {

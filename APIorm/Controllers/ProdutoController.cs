@@ -97,13 +97,7 @@ namespace APIorm.Controllers
         public async Task<IActionResult> PostProduto(Produto produto)
         {
             try
-            {                
-                string input = "breno123";
-                byte[] bytes = Encoding.UTF8.GetBytes(input);
-
-                var sha1 = SHA512.Create();
-                byte[] hashBytes = sha1.ComputeHash(bytes);
-
+            {               
                 return Ok(await _service.PostProduto(produto));
             }
             catch (Exception e)
