@@ -3,6 +3,7 @@ using APIorm.Models;
 using APIorm.Models.Context;
 using APIorm.Models.Interface;
 using APIorm.Repositories.Interfaces;
+using APIorm.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -43,25 +44,29 @@ namespace APIorm.Repositories
             }
         }
 
-        //public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
-        //{
-        //    try
-        //    {
-        //        if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+        public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
+        {
+            try
+            {
+                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
-        //        pageSize = pageSize == 0 ? DefaultPageSize : pageSize;
-        //        pageIndex = pageIndex == 0 ? DefaultPageIndex : pageIndex;
+                pageSize = pageSize == 0 ? DefaultPageSize : pageSize;
+                pageIndex = pageIndex == 0 ? DefaultPageIndex : pageIndex;
 
-        //        var produtos = await _context.Produtos.ToPagedListAsync(pageIndex, pageSize);
-        //        var count = produtos.TotalItemCount;
+                var produtos = await _context.Produtos.ToPagedListAsync(pageIndex, pageSize);
+                var count = produtos.TotalItemCount;
 
-        //        return new ResponseCluster<IEnumerable<Produto>>() { objValue = produtos, totalItemCount = count };
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw e;
-        //    }
-        //}
+                return new ResponseCluster<IEnumerable<Produto>>() { 
+                    objValue = produtos.ToList(), 
+                    totalItemCount = count, 
+                    metaData = produtos.GetMetaData() 
+                };
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
         public async Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList)
         {

@@ -16,28 +16,28 @@ namespace APIorm.Services
             _repository = repository;
         }
 
-        //public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
-        //{
-        //    try
-        //    {
-        //        return await _repository.GetAll(pageIndex, pageSize);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw e;
-        //    }
-        //}
-        public IEnumerable<Produto> GetAll()
+        public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
         {
             try
             {
-                return _repository.GetAll();
+                return await _repository.GetAll(pageIndex, pageSize);
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
+        //public IEnumerable<Produto> GetAll()
+        //{
+        //    try
+        //    {
+        //        return _repository.GetAll();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw e;
+        //    }
+        //}
 
         public Produto Get(int id)
         {
