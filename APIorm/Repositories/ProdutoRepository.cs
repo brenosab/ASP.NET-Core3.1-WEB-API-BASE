@@ -3,6 +3,7 @@ using APIorm.Models;
 using APIorm.Models.Context;
 using APIorm.Models.Interface;
 using APIorm.Repositories.Interfaces;
+using APIorm.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace APIorm.Repositories
 
                 var produto = _context.Produtos
                     .Select(b => b)
-                    .Where(b => b.Codigo == id)
+                    .Where(b => b.IdProduto == id)
                     .SingleOrDefault();
                 if(produto == null) { throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado"); }
 
@@ -43,25 +44,29 @@ namespace APIorm.Repositories
             }
         }
 
-        //public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
-        //{
-        //    try
-        //    {
-        //        if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
+        public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
+        {
+            try
+            {
+                if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
-        //        pageSize = pageSize == 0 ? DefaultPageSize : pageSize;
-        //        pageIndex = pageIndex == 0 ? DefaultPageIndex : pageIndex;
+                pageSize = pageSize == 0 ? DefaultPageSize : pageSize;
+                pageIndex = pageIndex == 0 ? DefaultPageIndex : pageIndex;
 
-        //        var produtos = await _context.Produtos.ToPagedListAsync(pageIndex, pageSize);
-        //        var count = produtos.TotalItemCount;
+                var produtos = await _context.Produtos.ToPagedListAsync(pageIndex, pageSize);
+                var count = produtos.TotalItemCount;
 
-        //        return new ResponseCluster<IEnumerable<Produto>>() { objValue = produtos, totalItemCount = count };
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw e;
-        //    }
-        //}
+                return new ResponseCluster<IEnumerable<Produto>>() { 
+                    objValue = produtos.ToList(), 
+                    totalItemCount = count, 
+                    metaData = produtos.GetMetaData() 
+                };
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
         public async Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList)
         {
@@ -120,22 +125,20 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> PostProduto(Produto produto)
+        public async Task<Produto> PostProduto(Produto produto)
         {
-            throw new NotImplementedException();
-            /*
             try
             {
                 if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
                 _context.Produtos.Add(produto);
                 await _context.SaveChangesAsync();
-                return string.Empty;
+                return produto;
             }
             catch (Exception e)
             {
                 throw e;
-            }*/
+            }
         }
         public async Task<string> PostProdutoList(IEnumerable<Produto> produtoList)
         {

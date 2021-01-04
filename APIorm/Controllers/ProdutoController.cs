@@ -20,23 +20,30 @@ namespace APIorm.Controllers
             _service = service;
         }
 
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        //[HttpGet]
-        //public async Task<IActionResult> GetProdutos(int pageIndex, int pageSize)
-        //{
-        //    var produtos = await _service.GetAll(pageIndex, pageSize);
-        //    return Ok(new { produtos = produtos.objValue, produtos.totalItemCount });
-        //}
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet]
-        public IActionResult GetProdutos()
+        public async Task<IActionResult> GetProdutos(int pageIndex, int pageSize)
         {
-            var produtos = _service.GetAll();
-            return Ok(produtos);
+            try
+            {
+                var produtos = await _service.GetAll(pageIndex, pageSize);
+                return Ok(new { produtos = produtos.objValue, produtos.totalItemCount, produtos.metaData });
+            }
+            catch(Exception e)
+            {
+                var err = e.Message;
+                return BadRequest(new { msg = err });
+            }
         }
-
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        //[HttpGet]
+        //public IActionResult GetProdutos()
+        //{
+        //    var produtos = _service.GetAll();
+        //    return Ok(produtos);
+        //}
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet("{id}")]
@@ -97,13 +104,7 @@ namespace APIorm.Controllers
         public async Task<IActionResult> PostProduto(Produto produto)
         {
             try
-            {                
-                string input = "breno123";
-                byte[] bytes = Encoding.UTF8.GetBytes(input);
-
-                var sha1 = SHA512.Create();
-                byte[] hashBytes = sha1.ComputeHash(bytes);
-
+            {               
                 return Ok(await _service.PostProduto(produto));
             }
             catch (Exception e)
