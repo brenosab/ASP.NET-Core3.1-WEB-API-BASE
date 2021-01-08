@@ -63,7 +63,7 @@ namespace APIorm.Services
         }
 
 
-        public Task<string> PutProduto(long id, Produto produto)
+        public Task<Produto> PutProduto(long id, Produto produto)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<string> DeleteProduto(long id)
+        public Task<Produto> DeleteProduto(long id)
         {
             try
             {

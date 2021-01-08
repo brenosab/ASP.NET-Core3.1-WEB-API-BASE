@@ -58,7 +58,11 @@ namespace APIorm.Repositories
                 var usuarios = await _context.Usuario.ToPagedListAsync(pageIndex, pageSize);
                 var count = usuarios.TotalItemCount;
 
-                return new ResponseCluster<IEnumerable<Usuario>>() { objValue = usuarios, totalItemCount = count };
+                return new ResponseCluster<IEnumerable<Usuario>>() { 
+                    objValue = usuarios, 
+                    totalItemCount = count,
+                    metaData = usuarios.GetMetaData()
+                };
             }
             catch (Exception e)
             {

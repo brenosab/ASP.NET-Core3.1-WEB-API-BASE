@@ -27,7 +27,7 @@ namespace APIorm.Controllers
             try
             {
                 var usuarios = await _service.GetAll(pageIndex, pageSize);
-                return Ok(new { usuarios = usuarios.objValue, usuarios.totalItemCount });
+                return Ok(new { usuarios = usuarios.objValue, usuarios.totalItemCount, usuarios.metaData });
             }
             catch(Exception e)
             {

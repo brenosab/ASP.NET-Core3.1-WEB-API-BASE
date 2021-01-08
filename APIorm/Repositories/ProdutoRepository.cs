@@ -94,7 +94,7 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> PutProduto(long id, Produto produto)
+        public async Task<Produto> PutProduto(long id, Produto produto)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace APIorm.Repositories
                         throw;
                     }
                 }
-                return string.Empty;
+                return produto;
             }
             catch (Exception e)
             {
@@ -157,7 +157,7 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> DeleteProduto(long id)
+        public async Task<Produto> DeleteProduto(long id)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace APIorm.Repositories
                 _context.Produtos.Remove(produto);
                 await _context.SaveChangesAsync();
 
-                return string.Empty;
+                return produto;
             }
             catch(Exception e)
             {

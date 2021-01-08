@@ -10,11 +10,9 @@ namespace APIorm.Repositories.Interfaces
         Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize);
         Produto Get(int id);
         Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList);
-
-        Task<string> PutProduto(long id, Produto produto);
+        Task<Produto> PutProduto(long id, Produto produto);
         Task<Produto> PostProduto(Produto produto);
         Task<string> PostProdutoList(IEnumerable<Produto> produtoList);
-
-        Task<string> DeleteProduto(long id);
+        Task<Produto> DeleteProduto(long id);
     }
 }
