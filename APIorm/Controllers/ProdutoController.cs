@@ -91,7 +91,8 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(await _service.PutProduto(id, produto));
+                var result = await _service.PutProduto(id, produto);
+                return CreatedAtAction("PutProduto", new { id = result.IdProduto }, result);
             }
             catch (Exception e)
             {
@@ -107,7 +108,8 @@ namespace APIorm.Controllers
         {
             try
             {               
-                return Ok(await _service.PostProduto(produto));
+                var result = await _service.PostProduto(produto);
+                return CreatedAtAction("PostProduto", new { id = result.IdProduto }, result);
             }
             catch (Exception e)
             {
@@ -140,7 +142,8 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(await _service.DeleteProduto(id));
+                var result = await _service.DeleteProduto(id);
+                return CreatedAtAction("DeleteProduto", new { id = result.IdProduto }, result);
             }
             catch (Exception e)
             {
