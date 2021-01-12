@@ -27,7 +27,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Compra Get(long id)
+        public Task<Compra> Get(long id)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<string> PutCompra(long id, Compra compra)
+        public Task<Compra> PutCompra(long id, Compra compra)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<string> PostCompra(Compra compra)
+        public Task<Compra> PostCompra(Compra compra)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<string> DeleteCompra(long id)
+        public Task<Compra> DeleteCompra(long id)
         {
             try
             {

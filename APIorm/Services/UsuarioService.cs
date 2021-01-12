@@ -28,11 +28,11 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Usuario Get(int id)
+        public async Task<Usuario> Get(int id)
         {
             try
             {
-                return _repository.Get(id);
+                return await _repository.Get(id);
             }
             catch (Exception e)
             {
@@ -50,7 +50,7 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<string> PutUsuario(long id, Usuario usuario)
+        public Task<Usuario> PutUsuario(long id, Usuario usuario)
         {
             try
             {
@@ -105,6 +105,5 @@ namespace APIorm.Services
                 throw e;
             }
         }
-
     }
 }

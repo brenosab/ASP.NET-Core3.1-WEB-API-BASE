@@ -39,11 +39,12 @@ namespace APIorm.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet("{id}")]
-        public IActionResult GetUsuario(int id)
+        public async Task<IActionResult> GetUsuario(int id)
         {
             try
             {
-                return Ok(_service.Get(id));
+                var result = await _service.Get(id);
+                return CreatedAtAction("GetUsuario", new { id = result.IdUsuario }, result);
             }
             catch (Exception e)
             {
@@ -99,7 +100,6 @@ namespace APIorm.Controllers
             {
                 var result = await _service.PostUsuario(usuario);
                 return CreatedAtAction("GetUsuario", new { id = usuario.IdUsuario }, result);
-                //return Ok(await _service.PostUsuario(usuario));
             }
             catch (Exception e)
             {

@@ -9,9 +9,9 @@ namespace APIorm.Services.Interfaces
     public interface IUsuarioService
     {
         Task<ResponseCluster<IEnumerable<Usuario>>> GetAll(int pageIndex, int pageSize);
-        Usuario Get(int id);
+        Task<Usuario> Get(int id);
         Task<ResponseCluster<IEnumerable<Usuario>>> GetUsuarioList(IEnumerable<int> idList);
-        Task<string> PutUsuario(long id, Usuario usuario);
+        Task<Usuario> PutUsuario(long id, Usuario usuario);
         Task<Usuario> PostUsuario(UsuarioViewModel usuario);
         Task<string> PostUsuarioList(IEnumerable<Usuario> usuarioList);
         Task<Usuario> DeleteUsuario(long id);

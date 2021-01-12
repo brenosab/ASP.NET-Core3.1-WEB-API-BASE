@@ -9,7 +9,9 @@ using APIorm.Repositories.Interfaces;
 using APIorm.Repositories;
 using APIorm.Services.Interfaces;
 using APIorm.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using System.Linq;
 
 namespace APIorm
 {
@@ -33,19 +35,22 @@ namespace APIorm
                        p.AllowAnyHeader();
                    }));
 
+            services.AddControllers();
+            //services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API BASE ASP.NET-Core3.1", Version = "v1" });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //This line
+            });
+
             services.AddDbContext<UsuarioContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddDbContext<CompraContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
@@ -63,6 +68,7 @@ namespace APIorm
         {
             app.UseCors("AllowAll");
             app.UseStaticFiles();
+            app.UseRouting();
 
             if (env.IsDevelopment())
             {
@@ -75,11 +81,6 @@ namespace APIorm
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

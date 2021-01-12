@@ -26,16 +26,16 @@ namespace APIorm.Repositories
             _context = context;
         }
 
-        public Usuario Get(int id)
+        public async Task<Usuario> Get(int id)
         {
             try
             {
                 if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
 
-                var usuario = _context.Usuario
+                var usuario = await _context.Usuario
                     .Select(b => b)
                     .Where(b => b.IdUsuario == id)
-                    .SingleOrDefault();
+                    .SingleOrDefaultAsync();
 
                 if(usuario == null) { throw new ApiException(ApiException.ApiExceptionReason.USUARIO_NAO_ENCONTRADO, "Usuário não encontrado"); }
                 return usuario;
@@ -82,7 +82,7 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> PutUsuario(long id, Usuario usuario)
+        public async Task<Usuario> PutUsuario(long id, Usuario usuario)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace APIorm.Repositories
                         throw;
                     }
                 }
-                return string.Empty;
+                return usuario;
             }
             catch (Exception e)
             {

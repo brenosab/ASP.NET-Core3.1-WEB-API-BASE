@@ -51,9 +51,11 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(_service.Get(id));
+                var result = _service.Get(id);
+                return CreatedAtAction("GetProduto", new { id = result.IdProduto }, result);
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 var err = e.Message;
                 return BadRequest(new { msg= err });

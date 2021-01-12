@@ -8,12 +8,12 @@ namespace APIorm.Services.Interfaces
     public interface ICompraService
     {
         Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize);
-        Compra Get(long id);
+        Task<Compra> Get(long id);
         Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList);
-        Task<string> PutCompra(long id, Compra compra);
-        Task<string> PostCompra(Compra compra);
+        Task<Compra> PutCompra(long id, Compra compra);
+        Task<Compra> PostCompra(Compra compra);
         Task<string> PostCompraList(IEnumerable<Compra> compraList);
 
-        Task<string> DeleteCompra(long id);
+        Task<Compra> DeleteCompra(long id);
     }
 }

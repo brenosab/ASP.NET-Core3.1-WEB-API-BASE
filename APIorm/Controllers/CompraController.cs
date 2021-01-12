@@ -23,20 +23,29 @@ namespace APIorm.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCompras(int pageIndex, int pageSize)
         {
-            var compras = await _service.GetAll(pageIndex, pageSize);
-            return Ok(new { compras = compras.objValue, compras.totalItemCount });
+            try
+            {
+                var compras = await _service.GetAll(pageIndex, pageSize);
+                return Ok(new { compras = compras.objValue, compras.totalItemCount });
+            }
+            catch(Exception e)
+            {
+                var err = e.Message;
+                return BadRequest(new { msg = err });
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet("{id}")]
-        public IActionResult GetCompra(long id)
+        public async Task<IActionResult> GetCompra(long id)
         {
             try
             {
-                return Ok(_service.Get(id));
+                var result = await _service.Get(id);
+                return CreatedAtAction("GetCompra", new { id = result.IdCompra }, result);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 var err = e.Message;
                 return BadRequest(new { msg = err });
@@ -88,7 +97,9 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(await _service.PostCompra(compra));
+                var result = await _service.PostCompra(compra);
+                return CreatedAtAction("PostCompra", new { id = compra.IdCompra }, result);
+
             }
             catch (Exception e)
             {

@@ -12,33 +12,33 @@ using X.PagedList;
 
 namespace APIorm.Repositories
 {
-    public class CompraRepository : ICompraRepository
+    public class CompraRepository : Repository<Compra>, ICompraRepository
     {
         private readonly CompraContext _context;
         private const int DefaultPageIndex = 1;
         private const int DefaultPageSize = 10;
 
-        public CompraRepository(CompraContext context)
+        public CompraRepository(CompraContext context) : base(context)
         {
             _context = context;
         }
 
-        public Compra Get(long id)
+        public async Task<Compra> Get(long id)
         {
             try
             {
                 if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
-                var compra = _context.Compras
+                var compra = await _context.Compras
                    .Select(b => b)
                    .Where(b => b.IdCompra == id)
-                   .SingleOrDefault();
+                   .SingleOrDefaultAsync();
 
                 if (compra == null) { throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrada"); }
 
-                compra.ItensCompra = _context.ItensCompras
+                compra.ItensCompra = await _context.ItensCompras
                      .Select(i => i)
                      .Where(i => i.IdCompra == id)
-                     .ToList();              
+                     .ToListAsync();              
                 
                 foreach(ItensCompra itensCompra in compra.ItensCompra)
                 {
@@ -128,7 +128,7 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> PutCompra(long id, Compra compra)
+        public async Task<Compra> PutCompra(long id, Compra compra)
         {
             try
             {
@@ -159,7 +159,7 @@ namespace APIorm.Repositories
                         throw;
                     }
                 }
-                return string.Empty;
+                return compra;
             }
             catch (Exception e)
             {
@@ -167,14 +167,14 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> PostCompra(Compra compra)
+        public async Task<Compra> PostCompra(Compra compra)
         {
             try
             {
                 if (!_context.Database.CanConnect()) { throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados"); }
                 _context.Compras.Add(compra);
                 await _context.SaveChangesAsync();
-                return string.Empty;
+                return compra;
             }
             catch (Exception e)
             {
@@ -201,7 +201,7 @@ namespace APIorm.Repositories
             }
         }
 
-        public async Task<string> DeleteCompra(long id)
+        public async Task<Compra> DeleteCompra(long id)
         {
             try
             {
@@ -220,7 +220,7 @@ namespace APIorm.Repositories
                 _context.Compras.Remove(compra);
                 await _context.SaveChangesAsync();
 
-                return string.Empty;
+                return compra;
             }
             catch (Exception e)
             {
