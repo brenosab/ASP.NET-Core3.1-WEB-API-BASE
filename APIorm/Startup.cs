@@ -36,11 +36,10 @@ namespace APIorm
                    }));
 
             services.AddControllers();
-            //services.AddSwaggerGen();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API BASE ASP.NET-Core3.1", Version = "v1" });
-                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //This line
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
 
             services.AddDbContext<UsuarioContext>(options =>
@@ -48,7 +47,6 @@ namespace APIorm
             
             services.AddDbContext<CompraContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
