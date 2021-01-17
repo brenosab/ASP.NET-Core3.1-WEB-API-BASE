@@ -10,12 +10,14 @@ namespace APIorm.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long IdProduto { get; set; }
 
+        [Required]
         public int Codigo { get; set; }
         
         [Required]
         [StringLength(100)]        
         public string Descricao { get; set; }
         
+        [Required]
         public double Valor { get; set; }
         
         public List<ItensCompra> ItensCompra { get; set; } 
