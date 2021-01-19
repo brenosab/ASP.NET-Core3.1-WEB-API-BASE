@@ -39,11 +39,11 @@ namespace APIorm.Services
         //    }
         //}
 
-        public Produto Get(int id)
+        public Produto Get(int id, string descricao)
         {
             try
             {
-                return _repository.Get(id);
+                return _repository.Get(id, descricao);
             }
             catch (Exception e)
             {

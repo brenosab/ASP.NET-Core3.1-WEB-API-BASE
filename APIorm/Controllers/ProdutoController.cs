@@ -46,12 +46,12 @@ namespace APIorm.Controllers
         //}
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [HttpGet("{id}")]
-        public IActionResult GetProduto(int id)
+        [HttpGet("id")]
+        public IActionResult GetProduto(int id, string descricao)
         {
             try
             {
-                var result = _service.Get(id);
+                var result = _service.Get(id, descricao);
                 return CreatedAtAction("GetProduto", new { id = result.IdProduto }, result);
 
             }

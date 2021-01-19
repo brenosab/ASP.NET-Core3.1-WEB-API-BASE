@@ -28,11 +28,11 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public async Task<Usuario> Get(int id)
+        public async Task<Usuario> Get(int id, string nome)
         {
             try
             {
-                return await _repository.Get(id);
+                return await _repository.Get(id, nome);
             }
             catch (Exception e)
             {
