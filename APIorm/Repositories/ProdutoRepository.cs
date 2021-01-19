@@ -24,7 +24,7 @@ namespace APIorm.Repositories
             _context = context;
         }
 
-        public Produto Get(int id)
+        public Produto Get(int id, string descricao)
         {
             try
             {
@@ -32,8 +32,9 @@ namespace APIorm.Repositories
 
                 var produto = _context.Produtos
                     .Select(b => b)
-                    .Where(b => b.IdProduto == id)
+                    .Where(b => b.IdProduto == id || b.Descricao.Contains(descricao))
                     .SingleOrDefault();
+
                 if(produto == null) { throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado"); }
 
                 return produto;

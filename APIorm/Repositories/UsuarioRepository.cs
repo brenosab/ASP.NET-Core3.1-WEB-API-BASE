@@ -26,7 +26,7 @@ namespace APIorm.Repositories
             _context = context;
         }
 
-        public async Task<Usuario> Get(int id)
+        public async Task<Usuario> Get(int id, string nome)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace APIorm.Repositories
 
                 var usuario = await _context.Usuario
                     .Select(b => b)
-                    .Where(b => b.IdUsuario == id)
+                    .Where(b => b.IdUsuario == id || b.Nome.Contains(nome))
                     .SingleOrDefaultAsync();
 
                 if(usuario == null) { throw new ApiException(ApiException.ApiExceptionReason.USUARIO_NAO_ENCONTRADO, "Usuário não encontrado"); }

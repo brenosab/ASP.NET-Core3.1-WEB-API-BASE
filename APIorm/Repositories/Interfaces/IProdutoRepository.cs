@@ -8,7 +8,7 @@ namespace APIorm.Repositories.Interfaces
     public interface IProdutoRepository : IRepository<Produto>
     {
         Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize);
-        Produto Get(int id);
+        Produto Get(int id, string descricao);
         Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList);
         Task<Produto> PutProduto(long id, Produto produto);
         Task<Produto> PostProduto(Produto produto);

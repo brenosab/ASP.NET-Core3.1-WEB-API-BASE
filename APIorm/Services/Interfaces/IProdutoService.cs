@@ -10,7 +10,7 @@ namespace APIorm.Services.Interfaces
     {
         Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize);
         //IEnumerable<Produto> GetAll();
-        Produto Get(int id);
+        Produto Get(int id, string descricao);
         Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList);
         Task<Produto> PutProduto(long id, Produto produto);
         Task<Produto> PostProduto(Produto produto);

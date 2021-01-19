@@ -38,12 +38,12 @@ namespace APIorm.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUsuario(int id)
+        [HttpGet("id")]
+        public async Task<IActionResult> GetUsuario(int id, string nome)
         {
             try
             {
-                var usuario = await _service.Get(id);
+                var usuario = await _service.Get(id,nome);
                 return CreatedAtAction("GetUsuario", new { id = usuario.IdUsuario }, usuario);
             }
             catch (Exception e)
