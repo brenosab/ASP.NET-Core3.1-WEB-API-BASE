@@ -33,10 +33,10 @@ namespace APIorm.Models.Context
                 .HasForeignKey(p => p.IdCompra);
 
 
-            modelBuilder.Entity<ItensCompra>()
-                .HasOne(p => p.Produto)
-                .WithMany(b => b.ItensCompra)
-                .HasForeignKey(p => p.IdProduto);
+            //modelBuilder.Entity<ItensCompra>()
+            //    .HasOne(p => p.Produto)
+            //    .WithMany(b => b.ItensCompra)
+            //    .HasForeignKey(p => p.IdProduto);
                 
         }
       
