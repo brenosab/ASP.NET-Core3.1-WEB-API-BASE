@@ -20,6 +20,6 @@ namespace APIorm.Models
         [Required]
         public double Valor { get; set; }
         
-        public List<ItensCompra> ItensCompra { get; set; } 
+        //public List<ItensCompra> ItensCompra { get; set; } 
     }
 }
