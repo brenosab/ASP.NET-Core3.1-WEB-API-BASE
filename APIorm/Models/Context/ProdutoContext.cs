@@ -4,18 +4,14 @@ namespace APIorm.Models.Context
 {
     public class ProdutoContext : DbContext
     {
-        public ProdutoContext(DbContextOptions<ProdutoContext> options)
-            : base(options)
-        {
-
-        }
+        public ProdutoContext(DbContextOptions<ProdutoContext> options) : base(options) { }
         public DbSet<Produto> Produtos { get; set; }
-       /*
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Produto>()
                 .HasKey(p => p.IdProduto);
-
+            modelBuilder.Entity<Produto>()
                 .HasData(
                 new Produto
                 {
@@ -31,9 +27,7 @@ namespace APIorm.Models.Context
                     Descricao = "MÁSCARA",
                     Codigo = 22
                 }
-            )
-            
-        }*/
-
+            );            
+        }
     }
 }
