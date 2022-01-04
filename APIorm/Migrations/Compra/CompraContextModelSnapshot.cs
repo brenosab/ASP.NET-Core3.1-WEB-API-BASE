@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace APIorm.Migrations
+namespace APIorm.Migrations.Compra
 {
     [DbContext(typeof(CompraContext))]
     partial class CompraContextModelSnapshot : ModelSnapshot
@@ -92,15 +92,41 @@ namespace APIorm.Migrations
                     b.Property<int>("Codigo")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DataHoraCadastro")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<double>("Valor")
                         .HasColumnType("float");
 
                     b.HasKey("IdProduto");
 
+                    b.HasIndex("Codigo")
+                        .IsUnique();
+
                     b.ToTable("Produtos");
+
+                    b.HasData(
+                        new
+                        {
+                            IdProduto = 1L,
+                            Codigo = 1,
+                            DataHoraCadastro = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Descricao = "ALCOOL EM GEL 1L",
+                            Valor = 8.1999999999999993
+                        },
+                        new
+                        {
+                            IdProduto = 2L,
+                            Codigo = 22,
+                            DataHoraCadastro = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Descricao = "MÁSCARA",
+                            Valor = 1.3999999999999999
+                        });
                 });
 
             modelBuilder.Entity("APIorm.Models.Usuario", b =>
@@ -110,13 +136,19 @@ namespace APIorm.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NomeLogin")
@@ -127,6 +159,9 @@ namespace APIorm.Migrations
 
                     b.Property<string>("Sexo")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TipoUsuario")
+                        .HasColumnType("int");
 
                     b.HasKey("IdUsuario");
 
@@ -151,7 +186,7 @@ namespace APIorm.Migrations
                         .IsRequired();
 
                     b.HasOne("APIorm.Models.Produto", "Produto")
-                        .WithMany("ItensCompra")
+                        .WithMany()
                         .HasForeignKey("IdProduto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

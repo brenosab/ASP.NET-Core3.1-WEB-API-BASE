@@ -3,23 +3,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace APIorm.Migrations
 {
-    public partial class AddUsuario : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Produtos",
+                name: "Produto",
                 columns: table => new
                 {
                     IdProduto = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Codigo = table.Column<int>(nullable: false),
-                    Descricao = table.Column<string>(nullable: true),
-                    Valor = table.Column<double>(nullable: false)
+                    Descricao = table.Column<string>(maxLength: 100, nullable: false),
+                    Valor = table.Column<double>(nullable: false),
+                    DataHoraCadastro = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Produtos", x => x.IdProduto);
+                    table.PrimaryKey("PK_Produto", x => x.IdProduto);
                 });
 
             migrationBuilder.CreateTable(
@@ -28,14 +29,14 @@ namespace APIorm.Migrations
                 {
                     IdUsuario = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(nullable: true),
+                    Nome = table.Column<string>(nullable: false),
                     NomeLogin = table.Column<string>(nullable: true),
                     SenhaLogin = table.Column<byte[]>(nullable: true),
                     DataNascimento = table.Column<DateTime>(nullable: false),
-                    Email = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: false),
                     Sexo = table.Column<string>(nullable: true),
-                    TipoUsuario = table.Column<int>(nullable: true),
-                    Cpf = table.Column<string>(nullable: true)
+                    Cpf = table.Column<string>(nullable: false),
+                    TipoUsuario = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,7 +44,7 @@ namespace APIorm.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Compras",
+                name: "Compra",
                 columns: table => new
                 {
                     IdCompra = table.Column<long>(nullable: false)
@@ -57,9 +58,9 @@ namespace APIorm.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Compras", x => x.IdCompra);
+                    table.PrimaryKey("PK_Compra", x => x.IdCompra);
                     table.ForeignKey(
-                        name: "FK_Compras_Usuario_UsuarioSolicitante",
+                        name: "FK_Compra_Usuario_UsuarioSolicitante",
                         column: x => x.UsuarioSolicitante,
                         principalTable: "Usuario",
                         principalColumn: "IdUsuario",
@@ -67,7 +68,7 @@ namespace APIorm.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItensCompras",
+                name: "ItensCompra",
                 columns: table => new
                 {
                     IdItemCompra = table.Column<long>(nullable: false)
@@ -80,47 +81,47 @@ namespace APIorm.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItensCompras", x => x.IdItemCompra);
+                    table.PrimaryKey("PK_ItensCompra", x => x.IdItemCompra);
                     table.ForeignKey(
-                        name: "FK_ItensCompras_Compras_IdCompra",
+                        name: "FK_ItensCompra_Compra_IdCompra",
                         column: x => x.IdCompra,
-                        principalTable: "Compras",
+                        principalTable: "Compra",
                         principalColumn: "IdCompra",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ItensCompras_Produtos_IdProduto",
+                        name: "FK_ItensCompra_Produto_IdProduto",
                         column: x => x.IdProduto,
-                        principalTable: "Produtos",
+                        principalTable: "Produto",
                         principalColumn: "IdProduto",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Compras_UsuarioSolicitante",
-                table: "Compras",
+                name: "IX_Compra_UsuarioSolicitante",
+                table: "Compra",
                 column: "UsuarioSolicitante");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItensCompras_IdCompra",
-                table: "ItensCompras",
+                name: "IX_ItensCompra_IdCompra",
+                table: "ItensCompra",
                 column: "IdCompra");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItensCompras_IdProduto",
-                table: "ItensCompras",
+                name: "IX_ItensCompra_IdProduto",
+                table: "ItensCompra",
                 column: "IdProduto");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ItensCompras");
+                name: "ItensCompra");
 
             migrationBuilder.DropTable(
-                name: "Compras");
+                name: "Compra");
 
             migrationBuilder.DropTable(
-                name: "Produtos");
+                name: "Produto");
 
             migrationBuilder.DropTable(
                 name: "Usuario");
