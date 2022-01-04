@@ -17,11 +17,11 @@ namespace APIorm.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private readonly UsuarioContext _context;
+        private readonly CompraContext _context;
         private const int DefaultPageIndex = 1;
         private const int DefaultPageSize = 10;
 
-        public UsuarioRepository(UsuarioContext context)
+        public UsuarioRepository(CompraContext context)
         {
             _context = context;
         }
