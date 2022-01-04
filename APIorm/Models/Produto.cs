@@ -10,13 +10,12 @@ namespace APIorm.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long IdProduto { get; set; }
         [Required]
-        public int Codigo { get; set; }        
+        public int Codigo { get; set; }
         [Required]
-        [StringLength(100)]        
-        public string Descricao { get; set; }        
+        [StringLength(100)]
+        public string Descricao { get; set; }
         [Required]
         public double Valor { get; set; }
-        [Required]
-        public DateTime DataHoraCadastro { get; set; }
+        public DateTime? DataHoraCadastro { get; set; } = DateTime.Now;
     }
 }

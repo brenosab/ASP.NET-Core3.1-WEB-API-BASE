@@ -5,12 +5,26 @@ namespace APIorm.Models.Context
     public class CompraContext : DbContext
     {
         public CompraContext(DbContextOptions<CompraContext> options) : base(options) { }
-        public DbSet<Compra> Compras { get; set; }
-        public DbSet<ItensCompra> ItensCompras { get; set; }
-        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Compra> Compra { get; set; }
+        public DbSet<ItensCompra> ItensCompra { get; set; }
+        public DbSet<Produto> Produto { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Usuario>()
+                .HasKey(p => p.IdUsuario);
+            modelBuilder.Entity<Usuario>()
+                .Property(p => p.Nome).IsRequired();
+            modelBuilder.Entity<Usuario>()
+                .Property(p => p.DataNascimento).IsRequired();
+            modelBuilder.Entity<Usuario>()
+                .Property(p => p.Email).IsRequired();
+            modelBuilder.Entity<Usuario>()
+                .Property(p => p.Cpf).IsRequired();
+            modelBuilder.Entity<Usuario>()
+               .Property(p => p.TipoUsuario).IsRequired();
+
             modelBuilder.Entity<Produto>()
                 .HasKey(p => p.IdProduto);
             modelBuilder.Entity<Produto>()

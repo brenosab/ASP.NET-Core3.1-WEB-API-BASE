@@ -4,14 +4,16 @@ using APIorm.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APIorm.Migrations.Compra
 {
     [DbContext(typeof(CompraContext))]
-    partial class CompraContextModelSnapshot : ModelSnapshot
+    [Migration("20220104140600_UpdateContexts")]
+    partial class UpdateContexts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,7 +118,7 @@ namespace APIorm.Migrations.Compra
                         {
                             IdProduto = 1L,
                             Codigo = 1,
-                            DataHoraCadastro = new DateTime(2022, 1, 4, 11, 8, 14, 846, DateTimeKind.Local).AddTicks(9875),
+                            DataHoraCadastro = new DateTime(2022, 1, 4, 11, 6, 0, 203, DateTimeKind.Local).AddTicks(3378),
                             Descricao = "ALCOOL EM GEL 1L",
                             Valor = 8.1999999999999993
                         },
@@ -124,7 +126,7 @@ namespace APIorm.Migrations.Compra
                         {
                             IdProduto = 2L,
                             Codigo = 22,
-                            DataHoraCadastro = new DateTime(2022, 1, 4, 11, 8, 14, 848, DateTimeKind.Local).AddTicks(2203),
+                            DataHoraCadastro = new DateTime(2022, 1, 4, 11, 6, 0, 204, DateTimeKind.Local).AddTicks(4536),
                             Descricao = "MÁSCARA",
                             Valor = 1.3999999999999999
                         });

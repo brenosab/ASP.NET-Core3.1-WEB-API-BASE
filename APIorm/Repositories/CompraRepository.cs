@@ -26,14 +26,14 @@ namespace APIorm.Repositories
         public async Task<Compra> Get(long id)
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
-            var compra = await _context.Compras
+            var compra = await _context.Compra
                 .Select(b => b)
                 .Where(b => b.IdCompra == id)
                 .SingleOrDefaultAsync();
 
             if (compra == null) throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrada");
 
-            compra.ItensCompra = await _context.ItensCompras
+            compra.ItensCompra = await _context.ItensCompra
                     .Select(i => i)
                     .Where(i => i.IdCompra == id)
                     .ToListAsync();              
@@ -53,12 +53,12 @@ namespace APIorm.Repositories
             pageSize = pageSize == 0 ? DefaultPageSize : pageSize;
             pageIndex = pageIndex == 0 ? DefaultPageIndex : pageIndex;
 
-            var compras = await _context.Compras.ToPagedListAsync(pageIndex, pageSize);
+            var compras = await _context.Compra.ToPagedListAsync(pageIndex, pageSize);
             var count = compras.TotalItemCount;
 
             foreach(Compra compra in compras)
             {
-                compra.ItensCompra = _context.ItensCompras
+                compra.ItensCompra = _context.ItensCompra
                     .Select(i => i)
                     .Where(i => i.IdCompra == compra.IdCompra)
                     .ToList();
@@ -79,7 +79,7 @@ namespace APIorm.Repositories
                 
             List<Erro> erros = new List<Erro>() { };
                 
-            var compras = await _context.Compras
+            var compras = await _context.Compra
                 .Select(b => b)
                 .Where(b => idList.Contains(b.IdCompra)).ToListAsync();
 
@@ -91,7 +91,7 @@ namespace APIorm.Repositories
 
             foreach (Compra compra in compras)
             {
-                compra.ItensCompra = _context.ItensCompras
+                compra.ItensCompra = _context.ItensCompra
                 .Select(i => i)
                 .Where(i => i.IdCompra == compra.IdCompra)
                 .ToList();
@@ -110,13 +110,13 @@ namespace APIorm.Repositories
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
 
-            var itens = await _context.ItensCompras
+            var itens = await _context.ItensCompra
             .Select(i => i)
             .Where(i => i.IdCompra == id)
             .ToListAsync();
 
-            _context.ItensCompras.RemoveRange(itens);
-            _context.ItensCompras.AddRange(compra.ItensCompra);
+            _context.ItensCompra.RemoveRange(itens);
+            _context.ItensCompra.AddRange(compra.ItensCompra);
             _context.Entry(compra).State = EntityState.Modified;
 
             try
@@ -141,7 +141,7 @@ namespace APIorm.Repositories
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
             
-            _context.Compras.Add(compra);
+            _context.Compra.Add(compra);
             await _context.SaveChangesAsync();
             
             return compra;
@@ -152,7 +152,7 @@ namespace APIorm.Repositories
 
             foreach (Compra compra in compraList)
             {
-                _context.Compras.Add(compra);
+                _context.Compra.Add(compra);
             }
             await _context.SaveChangesAsync();
 
@@ -162,8 +162,8 @@ namespace APIorm.Repositories
         public async Task<Compra> DeleteCompra(long id)
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
-            var compra = await _context.Compras.FindAsync(id);
-            var itens = await _context.ItensCompras
+            var compra = await _context.Compra.FindAsync(id);
+            var itens = await _context.ItensCompra
                 .Select(i => i)
                 .Where(i => i.IdCompra == id)
                 .ToListAsync();
@@ -172,8 +172,8 @@ namespace APIorm.Repositories
             {
                 throw new ApiException(ApiException.ApiExceptionReason.COMPRA_NAO_ENCONTRADA, "Compra não encontrada");
             }
-            _context.ItensCompras.RemoveRange(itens);
-            _context.Compras.Remove(compra);
+            _context.ItensCompra.RemoveRange(itens);
+            _context.Compra.Remove(compra);
             await _context.SaveChangesAsync();
 
             return compra;
@@ -181,7 +181,7 @@ namespace APIorm.Repositories
 
         private bool CompraExists(long id)
         {
-            return _context.Compras.Any(e => e.IdCompra == id);
+            return _context.Compra.Any(e => e.IdCompra == id);
         }
     }
 }
