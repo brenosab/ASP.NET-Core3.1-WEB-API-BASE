@@ -21,7 +21,6 @@ namespace APIorm.Models
         public string Cpf { get; set; }
         [Required]
         public int TipoUsuario { get; set; }
-
         public List<Compra> Compra { get; set; }
     }
 }

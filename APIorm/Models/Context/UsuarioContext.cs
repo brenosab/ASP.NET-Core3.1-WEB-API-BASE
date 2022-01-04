@@ -11,6 +11,16 @@ namespace APIorm.Models.Context
         {
             modelBuilder.Entity<Usuario>()
                 .HasKey(p => p.IdUsuario);
+            modelBuilder.Entity<Usuario>()
+                .Property(p => p.Nome).IsRequired();
+            modelBuilder.Entity<Usuario>()
+                .Property(p => p.DataNascimento).IsRequired();
+            modelBuilder.Entity<Usuario>()
+                .Property(p => p.Email).IsRequired();
+            modelBuilder.Entity<Usuario>()
+                .Property(p => p.Cpf).IsRequired();
+            modelBuilder.Entity<Usuario>()
+               .Property(p => p.TipoUsuario).IsRequired();
         }
     }
 }
