@@ -10,5 +10,6 @@ namespace APIorm.Repositories.Interfaces
         Task<TEntity> AddAsync(TEntity entity);
 
         Task<TEntity> UpdateAsync(TEntity entity);
+        Task<bool> ExistsAsync(long id);
     }
 }

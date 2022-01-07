@@ -5,8 +5,6 @@ using System;
 using APIorm.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
-using System.Text;
-using System.Security.Cryptography;
 
 namespace APIorm.Controllers
 {
@@ -14,10 +12,10 @@ namespace APIorm.Controllers
     [ApiController]
     public class ProdutoController : Controller
     {
-        private readonly IProdutoService _service;
+        private readonly IProdutoService service;
         public ProdutoController(IProdutoService service)
         {
-            _service = service;
+            this.service = service;
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -27,7 +25,7 @@ namespace APIorm.Controllers
         {
             try
             {
-                var produtos = await _service.GetAll(pageIndex, pageSize);
+                var produtos = await service.GetAll(pageIndex, pageSize);
                 return Ok(new { produtos = produtos.objValue, produtos.totalItemCount, produtos.metaData });
             }
             catch(Exception e)
@@ -36,14 +34,6 @@ namespace APIorm.Controllers
                 return BadRequest(new { msg = err });
             }
         }
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        //[HttpGet]
-        //public IActionResult GetProdutos()
-        //{
-        //    var produtos = _service.GetAll();
-        //    return Ok(produtos);
-        //}
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpGet("id")]
@@ -51,7 +41,7 @@ namespace APIorm.Controllers
         {
             try
             {
-                var result = _service.Get(id, descricao);
+                var result = service.Get(id, descricao);
                 return CreatedAtAction("GetProduto", new { id = result.IdProduto }, result);
 
             }
@@ -70,7 +60,7 @@ namespace APIorm.Controllers
         {
             try
             {
-                var response = await _service.GetProdutoList(idList);
+                var response = await service.GetProdutoList(idList);
                 if(response.erros != null)
                 {
                     return Ok(new { produtos = response.objValue, response.erros });
@@ -87,12 +77,12 @@ namespace APIorm.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduto(long id, Produto produto)
+        public async Task<IActionResult> Put(long id, Produto produto)
         {
             try
             {
-                var result = await _service.PutProduto(id, produto);
-                return CreatedAtAction("PutProduto", new { id = result.IdProduto }, result);
+                var result = await service.Put(id, produto);
+                return CreatedAtAction("Put", new { id = result.IdProduto }, result);
             }
             catch (Exception e)
             {
@@ -104,12 +94,12 @@ namespace APIorm.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public async Task<IActionResult> PostProduto(Produto produto)
+        public async Task<IActionResult> Post(Produto produto)
         {
             try
             {
-                var result = await _service.PostProduto(produto);
-                return CreatedAtAction("PostProduto", new { id = result.IdProduto }, result);
+                var result = await service.Post(produto);
+                return CreatedAtAction("Post", new { id = result.IdProduto }, result);
             }
             catch (Exception e)
             {
@@ -126,7 +116,7 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(await _service.PostProdutoList(produtoList));
+                return Ok(await service.PostProdutoList(produtoList));
             }
             catch (Exception e)
             {
@@ -138,11 +128,11 @@ namespace APIorm.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduto(long id)
+        public async Task<IActionResult> Delete(long id)
         {
             try
             {
-                var result = await _service.DeleteProduto(id);
+                var result = await service.Delete(id);
                 return CreatedAtAction("DeleteProduto", new { id = result.IdProduto }, result);
             }
             catch (Exception e)
