@@ -140,9 +140,15 @@ namespace APIorm.Repositories
         public async Task<Compra> PostCompra(Compra compra)
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
-            
-            _context.Compra.Add(compra);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Compra.Add(compra);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
             
             return compra;
         }

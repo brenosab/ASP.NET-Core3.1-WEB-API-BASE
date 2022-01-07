@@ -1,4 +1,5 @@
-﻿using APIorm.Models;
+﻿using APIorm.Exceptions;
+using APIorm.Models;
 using APIorm.Models.Interface;
 using APIorm.Repositories.Interfaces;
 using APIorm.Services.Interfaces;
@@ -10,17 +11,17 @@ namespace APIorm.Services
 {
     public class CompraService : ICompraService
     {
-        private readonly ICompraRepository _repository;
+        private readonly ICompraRepository repository;
         public CompraService(ICompraRepository repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize)
         {
             try
             {
-                return await _repository.GetAll(pageIndex, pageSize);
+                return await repository.GetAll(pageIndex, pageSize);
             }
             catch (Exception e)
             {
@@ -31,7 +32,7 @@ namespace APIorm.Services
         {
             try
             {
-                return _repository.Get(id);
+                return repository.Get(id);
             }
             catch (Exception e)
             {
@@ -42,29 +43,31 @@ namespace APIorm.Services
         {
             try
             {
-                return _repository.GetCompraList(idList);
+                return repository.GetCompraList(idList);
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
-        public Task<Compra> PutCompra(long id, Compra compra)
+        public async Task<Compra> Put(long id, Compra compra)
         {
-            try
-            {
-                return _repository.PutCompra(id, compra);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            var exist = await repository.ExistsAsync(id);
+            if (!exist)
+                throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, $"Compra não encontrada");
+
+            compra.IdCompra = id;
+            return await repository.UpdateAsync(compra);
+        }
+        public Task<Compra> Post(Compra compra)
+        {
+            return repository.AddAsync(compra);
         }
         public Task<Compra> PostCompra(Compra compra)
         {
             try
             {
-                return _repository.PostCompra(compra);
+                return repository.PostCompra(compra);
             }
             catch (Exception e)
             {
@@ -75,7 +78,7 @@ namespace APIorm.Services
         {
             try
             {
-                return _repository.PostCompraList(compraList);
+                return repository.PostCompraList(compraList);
             }
             catch (Exception e)
             {
@@ -86,7 +89,7 @@ namespace APIorm.Services
         {
             try
             {
-                return _repository.DeleteCompra(id);
+                return repository.DeleteCompra(id);
             }
             catch (Exception e)
             {

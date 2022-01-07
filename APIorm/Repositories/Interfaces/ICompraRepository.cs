@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace APIorm.Repositories.Interfaces
 {
-    public interface ICompraRepository
+    public interface ICompraRepository : IRepository<Compra>
     {
         Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize);
         Task<Compra> Get(long id);
