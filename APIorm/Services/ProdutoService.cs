@@ -5,45 +5,34 @@ using System.Threading.Tasks;
 using APIorm.Services.Interfaces;
 using System;
 using APIorm.Models.Interface;
+using APIorm.Exceptions;
 
 namespace APIorm.Services
 {
     public class ProdutoService : IProdutoService
     {
-        private readonly IProdutoRepository _repository;
+        private readonly IProdutoRepository repository;
         public ProdutoService(IProdutoRepository repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
         {
             try
             {
-                return await _repository.GetAll(pageIndex, pageSize);
+                return await repository.GetAll(pageIndex, pageSize);
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
-        //public IEnumerable<Produto> GetAll()
-        //{
-        //    try
-        //    {
-        //        return _repository.GetAll();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw e;
-        //    }
-        //}
-
         public Produto Get(int id, string descricao)
         {
             try
             {
-                return _repository.Get(id, descricao);
+                return repository.Get(id, descricao);
             }
             catch (Exception e)
             {
@@ -54,53 +43,43 @@ namespace APIorm.Services
         {
             try
             {
-                return _repository.GetProdutoList(idList);
+                return repository.GetProdutoList(idList);
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
-
-
-        public Task<Produto> PutProduto(long id, Produto produto)
+        public async Task<Produto> Put(long id, Produto produto)
         {
-            try
-            {
-                return _repository.PutProduto(id, produto);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            var exist = await repository.ExistsAsync(id);
+            if(!exist)
+                throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado");
+            
+            produto.IdProduto = id;
+            return await repository.UpdateAsync(produto);
         }
-        public Task<Produto> PostProduto(Produto produto)
+        public Task<Produto> Post(Produto produto)
         {
-            try
-            {
-                return _repository.PostProduto(produto);
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
+            produto.DataHoraCadastro = DateTime.Now;
+            return repository.AddAsync(produto);
         }
         public Task<string> PostProdutoList(IEnumerable<Produto> produtoList)
         {
             try
             {
-                return _repository.PostProdutoList(produtoList);
+                return repository.PostProdutoList(produtoList);
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
-        public Task<Produto> DeleteProduto(long id)
+        public Task<Produto> Delete(long id)
         {
             try
             {
-                return _repository.DeleteProduto(id);
+                return repository.DeleteProduto(id);
             }
             catch(Exception e)
             {

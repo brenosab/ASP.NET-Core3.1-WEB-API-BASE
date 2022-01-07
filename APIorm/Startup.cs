@@ -41,10 +41,7 @@ namespace APIorm
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API BASE ASP.NET-Core3.1", Version = "v1" });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
-
-            services.AddDbContext<UsuarioContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+                        
             services.AddDbContext<CompraContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

@@ -1,6 +1,5 @@
 ﻿using APIorm.Models;
 using APIorm.Models.Interface;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,13 +7,12 @@ namespace APIorm.Services.Interfaces
 {
     public interface IProdutoService
     {
-        Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize);
-        //IEnumerable<Produto> GetAll();
         Produto Get(int id, string descricao);
-        Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList);
-        Task<Produto> PutProduto(long id, Produto produto);
-        Task<Produto> PostProduto(Produto produto);
+        Task<Produto> Put(long id, Produto produto);
+        Task<Produto> Post(Produto produto);
+        Task<Produto> Delete(long id);
         Task<string> PostProdutoList(IEnumerable<Produto> produtoList);
-        Task<Produto> DeleteProduto(long id);
+        Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList);
+        Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize);
     }
 }
