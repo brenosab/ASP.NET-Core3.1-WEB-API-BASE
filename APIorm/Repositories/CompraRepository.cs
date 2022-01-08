@@ -106,7 +106,7 @@ namespace APIorm.Repositories
             return new ResponseCluster<IEnumerable<Compra>>() { objValue = compras };
         }
 
-        public async Task<Compra> PutCompra(long id, Compra compra)
+        public async Task<Compra> Put(long id, Compra compra)
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
 
@@ -137,21 +137,6 @@ namespace APIorm.Repositories
             return compra;
         }
 
-        public async Task<Compra> PostCompra(Compra compra)
-        {
-            if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
-            try
-            {
-                _context.Compra.Add(compra);
-                await _context.SaveChangesAsync();
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-            
-            return compra;
-        }
         public async Task<string> PostCompraList(IEnumerable<Compra> compraList)
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
