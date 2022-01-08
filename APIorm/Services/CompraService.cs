@@ -1,5 +1,4 @@
-﻿using APIorm.Exceptions;
-using APIorm.Models;
+﻿using APIorm.Models;
 using APIorm.Models.Interface;
 using APIorm.Repositories.Interfaces;
 using APIorm.Services.Interfaces;
@@ -50,29 +49,13 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public async Task<Compra> Put(long id, Compra compra)
+        public Task<Compra> Put(long id, Compra compra)
         {
-            var exist = await repository.ExistsAsync(id);
-            if (!exist)
-                throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, $"Compra não encontrada");
-
-            compra.IdCompra = id;
-            return await repository.UpdateAsync(compra);
+            return repository.Put(id, compra);
         }
         public Task<Compra> Post(Compra compra)
         {
             return repository.AddAsync(compra);
-        }
-        public Task<Compra> PostCompra(Compra compra)
-        {
-            try
-            {
-                return repository.PostCompra(compra);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
         }
         public Task<string> PostCompraList(IEnumerable<Compra> compraList)
         {
