@@ -52,7 +52,7 @@ namespace APIorm.Repositories
             };
         }
 
-        public async Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList)
+        public async Task<ResponseCluster<IEnumerable<Produto>>> GetList(IEnumerable<int> idList)
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
             List<Erro> erros = new List<Erro>() { };                
@@ -69,45 +69,7 @@ namespace APIorm.Repositories
             return new ResponseCluster<IEnumerable<Produto>>() { objValue = produtos };
         }
 
-        public async Task<Produto> PutProduto(long id, Produto produto)
-        {
-            if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
-            _context.Entry(produto).State = EntityState.Modified;
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProdutoExists(id))
-                    throw new Exception("Produto não encontrado.");
-                else
-                    throw;
-            }
-            return produto;
-        }
-
-        public async Task<Produto> PostProduto(Produto produto)
-        {
-            if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
-            
-            produto.DataHoraCadastro = DateTime.Now;
-            _context.Produto.Add(produto);
-            try 
-            { 
-                await _context.SaveChangesAsync(); 
-            }
-            catch(DbUpdateException ex)
-            {
-                if(ex.InnerException.Message.Contains("chave duplicada"))
-                    throw new ApiException(ApiException.ApiExceptionReason.DB_CHAVE_DUPLICADA,ex.InnerException.Message.Replace("\r\n",""));
-                else
-                    throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, ex.InnerException.Message);
-            }
-            return produto;
-        }
-
-        public async Task<string> PostProdutoList(IEnumerable<Produto> produtoList)
+        public async Task<string> PostList(IEnumerable<Produto> produtoList)
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
 
@@ -116,20 +78,16 @@ namespace APIorm.Repositories
             return string.Empty;
         }
 
-        public async Task<Produto> DeleteProduto(long id)
+        public async Task<Produto> Delete(long id)
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
 
             var produto = await _context.Produto.FindAsync(id);
-            if (produto == null) throw new Exception("Produto não encontrado.");
+            if (produto == null) throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado");
+
             _context.Produto.Remove(produto);
             await _context.SaveChangesAsync();
             return produto;
-        }
-
-        private bool ProdutoExists(long id)
-        {
-            return _context.Produto.Any(e => e.IdProduto == id);
         }
     }
 }

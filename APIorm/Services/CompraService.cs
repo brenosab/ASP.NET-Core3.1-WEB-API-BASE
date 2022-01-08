@@ -2,7 +2,6 @@
 using APIorm.Models.Interface;
 using APIorm.Repositories.Interfaces;
 using APIorm.Services.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,36 +17,15 @@ namespace APIorm.Services
 
         public async Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize)
         {
-            try
-            {
-                return await repository.GetAll(pageIndex, pageSize);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return await repository.GetAll(pageIndex, pageSize);
         }
         public Task<Compra> Get(long id)
         {
-            try
-            {
-                return repository.Get(id);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.Get(id);
         }
         public Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList)
         {
-            try
-            {
-                return repository.GetCompraList(idList);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.GetList(idList);
         }
         public Task<Compra> Put(long id, Compra compra)
         {
@@ -59,25 +37,11 @@ namespace APIorm.Services
         }
         public Task<string> PostCompraList(IEnumerable<Compra> compraList)
         {
-            try
-            {
-                return repository.PostCompraList(compraList);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.PostList(compraList);
         }
         public Task<Compra> DeleteCompra(long id)
         {
-            try
-            {
-                return repository.DeleteCompra(id);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.Delete(id);
         }
     }
 }

@@ -9,9 +9,9 @@ namespace APIorm.Repositories.Interfaces
     {
         Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize);
         Task<Compra> Get(long id);
-        Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList);
+        Task<ResponseCluster<IEnumerable<Compra>>> GetList(IEnumerable<long> idList);
         Task<Compra> Put(long id, Compra compra);
-        Task<string> PostCompraList(IEnumerable<Compra> compraList);
-        Task<Compra> DeleteCompra(long id);
+        Task<string> PostList(IEnumerable<Compra> compraList);
+        Task<Compra> Delete(long id);
     }
 }

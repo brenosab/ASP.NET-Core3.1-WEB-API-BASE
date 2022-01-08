@@ -19,36 +19,15 @@ namespace APIorm.Services
 
         public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
         {
-            try
-            {
-                return await repository.GetAll(pageIndex, pageSize);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return await repository.GetAll(pageIndex, pageSize);
         }
         public Produto Get(int id, string descricao)
         {
-            try
-            {
-                return repository.Get(id, descricao);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.Get(id, descricao);
         }
         public Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList)
         {
-            try
-            {
-                return repository.GetProdutoList(idList);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.GetList(idList);
         }
         public async Task<Produto> Put(long id, Produto produto)
         {
@@ -66,25 +45,11 @@ namespace APIorm.Services
         }
         public Task<string> PostProdutoList(IEnumerable<Produto> produtoList)
         {
-            try
-            {
-                return repository.PostProdutoList(produtoList);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.PostList(produtoList);
         }
         public Task<Produto> Delete(long id)
         {
-            try
-            {
-                return repository.DeleteProduto(id);
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
+            return repository.Delete(id);
         }
     }
 }
