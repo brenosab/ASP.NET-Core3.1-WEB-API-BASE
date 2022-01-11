@@ -9,7 +9,7 @@ namespace APIorm.Repositories.Interfaces
     public interface IUsuarioRepository
     {
         Task<ResponseCluster<IEnumerable<Usuario>>> GetAll(int pageIndex, int pageSize);
-        Task<Usuario> Get(int id);
+        Task<Usuario> Get(int id, string nome);
         Task<ResponseCluster<IEnumerable<Usuario>>> GetUsuarioList(IEnumerable<int> idList);
         Task<Usuario> PutUsuario(long id, Usuario usuario);
         Task<Usuario> PostUsuario(UsuarioViewModel usuario);

@@ -27,13 +27,5 @@ namespace APIorm.ViewModels
             Cpf = cpf;
             TipoUsuario = tipoUsuario;
         }
-        /*
-        public UsuarioViewModel(Usuario usuario)
-        {
-            Id = product.ProductId;
-            Sku = product.Sku;
-            Name = product.Name;
-        }
-        */
     }
 }

@@ -10,15 +10,13 @@ namespace APIorm.Exceptions
             DISCONNECTION_NOT_COMPLETED,
             XML_COULD_NOT_BE_READ,
             XML_COULD_NOT_BE_PARSED,
-            INVALID_METER_TYPE,
             JSON_NOT_FOUND,
-            WRONG_DLMS_STRUCTURE,
-            INVALID_METER_RESPONSE,
 
             PRODUTO_NAO_ENCONTRADO,
             COMPRA_NAO_ENCONTRADA,
             USUARIO_NAO_ENCONTRADO,
 
+            DB_CHAVE_DUPLICADA,
             CODIGO_INVALIDO,
             DB_CONNECTION_NOT_COMPLETED,
             DB_DISCONNECTION_NOT_COMPLETED,

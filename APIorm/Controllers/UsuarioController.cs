@@ -38,13 +38,13 @@ namespace APIorm.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUsuario(int id)
+        [HttpGet("id")]
+        public async Task<IActionResult> GetUsuario(int id, string nome)
         {
             try
             {
-                var result = await _service.Get(id);
-                return CreatedAtAction("GetUsuario", new { id = result.IdUsuario }, result);
+                var usuario = await _service.Get(id,nome);
+                return CreatedAtAction("GetUsuario", new { id = usuario.IdUsuario }, usuario);
             }
             catch (Exception e)
             {
@@ -82,7 +82,8 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(await _service.PutUsuario(id, usuario));
+                var result =await _service.PutUsuario(id, usuario);
+                return CreatedAtAction("PutUsuario", new { id = usuario.IdUsuario }, result);
             }
             catch (Exception e)
             {
@@ -99,7 +100,7 @@ namespace APIorm.Controllers
             try
             {
                 var result = await _service.PostUsuario(usuario);
-                return CreatedAtAction("GetUsuario", new { id = usuario.IdUsuario }, result);
+                return CreatedAtAction("PostUsuario", new { id = usuario.IdUsuario }, result);
             }
             catch (Exception e)
             {
@@ -132,7 +133,8 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(await _service.DeleteUsuario(id));
+                var usuario = await _service.DeleteUsuario(id);
+                return CreatedAtAction("DeleteUsuario", new { id = usuario.IdUsuario }, usuario);
             }
             catch (Exception e)
             {

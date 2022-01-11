@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace APIorm.Migrations
+namespace APIorm.Migrations.Compra
 {
-    public partial class AddUsuario : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,9 @@ namespace APIorm.Migrations
                     IdProduto = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Codigo = table.Column<int>(nullable: false),
-                    Descricao = table.Column<string>(nullable: true),
-                    Valor = table.Column<double>(nullable: false)
+                    Descricao = table.Column<string>(maxLength: 100, nullable: false),
+                    Valor = table.Column<double>(nullable: false),
+                    DataHoraCadastro = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,14 +29,14 @@ namespace APIorm.Migrations
                 {
                     IdUsuario = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(nullable: true),
+                    Nome = table.Column<string>(nullable: false),
                     NomeLogin = table.Column<string>(nullable: true),
                     SenhaLogin = table.Column<byte[]>(nullable: true),
                     DataNascimento = table.Column<DateTime>(nullable: false),
-                    Email = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: false),
                     Sexo = table.Column<string>(nullable: true),
-                    TipoUsuario = table.Column<int>(nullable: true),
-                    Cpf = table.Column<string>(nullable: true)
+                    Cpf = table.Column<string>(nullable: false),
+                    TipoUsuario = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,6 +96,16 @@ namespace APIorm.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Produtos",
+                columns: new[] { "IdProduto", "Codigo", "DataHoraCadastro", "Descricao", "Valor" },
+                values: new object[] { 1L, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "ALCOOL EM GEL 1L", 8.1999999999999993 });
+
+            migrationBuilder.InsertData(
+                table: "Produtos",
+                columns: new[] { "IdProduto", "Codigo", "DataHoraCadastro", "Descricao", "Valor" },
+                values: new object[] { 2L, 22, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "MÁSCARA", 1.3999999999999999 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Compras_UsuarioSolicitante",
                 table: "Compras",
@@ -109,6 +120,12 @@ namespace APIorm.Migrations
                 name: "IX_ItensCompras_IdProduto",
                 table: "ItensCompras",
                 column: "IdProduto");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Produtos_Codigo",
+                table: "Produtos",
+                column: "Codigo",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

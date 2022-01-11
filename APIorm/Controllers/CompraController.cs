@@ -12,10 +12,10 @@ namespace APIorm.Controllers
     [ApiController]
     public class CompraController : Controller
     {
-        private readonly ICompraService _service;
+        private readonly ICompraService service;
         public CompraController(ICompraService service)
         {
-            _service = service;
+            this.service = service;
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -25,7 +25,7 @@ namespace APIorm.Controllers
         {
             try
             {
-                var compras = await _service.GetAll(pageIndex, pageSize);
+                var compras = await service.GetAll(pageIndex, pageSize);
                 return Ok(new { compras = compras.objValue, compras.totalItemCount });
             }
             catch(Exception e)
@@ -42,7 +42,7 @@ namespace APIorm.Controllers
         {
             try
             {
-                var result = await _service.Get(id);
+                var result = await service.Get(id);
                 return CreatedAtAction("GetCompra", new { id = result.IdCompra }, result);
             }
             catch (Exception e)
@@ -60,7 +60,7 @@ namespace APIorm.Controllers
         {
             try
             {
-                var response = await _service.GetCompraList(idList);
+                var response = await service.GetCompraList(idList);
                 if (response.erros != null)
                 {
                     return Ok(new { compras = response.objValue, response.erros });
@@ -77,11 +77,12 @@ namespace APIorm.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCompra(long id, Compra compra)
+        public async Task<IActionResult> Put(long id, Compra compra)
         {
             try
             {
-                return Ok(await _service.PutCompra(id, compra));
+                var result = await service.Put(id, compra);
+                return CreatedAtAction("PutCompra", new { id = result.IdCompra }, result);
             }
             catch (Exception e)
             {
@@ -93,13 +94,12 @@ namespace APIorm.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public async Task<IActionResult> PostCompra(Compra compra)
+        public async Task<IActionResult> Post(Compra compra)
         {
             try
             {
-                var result = await _service.PostCompra(compra);
-                return CreatedAtAction("PostCompra", new { id = compra.IdCompra }, result);
-
+                var result = await service.Post(compra);
+                return CreatedAtAction("Post", new { id = compra.IdCompra }, result);
             }
             catch (Exception e)
             {
@@ -116,7 +116,7 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(await _service.PostCompraList(compraList));
+                return Ok(await service.PostCompraList(compraList));
             }
             catch (Exception e)
             {
@@ -132,7 +132,8 @@ namespace APIorm.Controllers
         {
             try
             {
-                return Ok(await _service.DeleteCompra(id));
+                var result = await service.DeleteCompra(id);
+                return CreatedAtAction("DeleteCompra", new { id = result.IdCompra }, result);
             }
             catch (Exception e)
             {

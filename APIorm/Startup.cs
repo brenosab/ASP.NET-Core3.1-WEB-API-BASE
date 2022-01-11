@@ -35,20 +35,17 @@ namespace APIorm
                        p.AllowAnyHeader();
                    }));
 
-            services.AddControllers();
-            //services.AddSwaggerGen();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API BASE ASP.NET-Core3.1", Version = "v1" });
-                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //This line
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
-
-            services.AddDbContext<UsuarioContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+                        
             services.AddDbContext<CompraContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 

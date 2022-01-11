@@ -2,7 +2,6 @@
 using APIorm.Models.Interface;
 using APIorm.Repositories.Interfaces;
 using APIorm.Services.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,88 +9,39 @@ namespace APIorm.Services
 {
     public class CompraService : ICompraService
     {
-        private readonly ICompraRepository _repository;
+        private readonly ICompraRepository repository;
         public CompraService(ICompraRepository repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize)
         {
-            try
-            {
-                return await _repository.GetAll(pageIndex, pageSize);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return await repository.GetAll(pageIndex, pageSize);
         }
         public Task<Compra> Get(long id)
         {
-            try
-            {
-                return _repository.Get(id);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.Get(id);
         }
         public Task<ResponseCluster<IEnumerable<Compra>>> GetCompraList(IEnumerable<long> idList)
         {
-            try
-            {
-                return _repository.GetCompraList(idList);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.GetList(idList);
         }
-        public Task<Compra> PutCompra(long id, Compra compra)
+        public Task<Compra> Put(long id, Compra compra)
         {
-            try
-            {
-                return _repository.PutCompra(id, compra);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.Put(id, compra);
         }
-        public Task<Compra> PostCompra(Compra compra)
+        public Task<Compra> Post(Compra compra)
         {
-            try
-            {
-                return _repository.PostCompra(compra);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.AddAsync(compra);
         }
         public Task<string> PostCompraList(IEnumerable<Compra> compraList)
         {
-            try
-            {
-                return _repository.PostCompraList(compraList);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.PostList(compraList);
         }
         public Task<Compra> DeleteCompra(long id)
         {
-            try
-            {
-                return _repository.DeleteCompra(id);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return repository.Delete(id);
         }
     }
 }
