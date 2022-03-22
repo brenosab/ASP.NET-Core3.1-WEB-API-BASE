@@ -6,27 +6,31 @@ using APIorm.Services.Interfaces;
 using System;
 using APIorm.Models.Interface;
 using APIorm.ViewModels;
+using APIorm.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace APIorm.Services
 {
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _repository;
-        public UsuarioService(IUsuarioRepository repository)
+        private readonly ILogger<UsuarioService> logger;
+        public UsuarioService(IUsuarioRepository repository, ILogger<UsuarioService> logger)
         {
             _repository = repository;
+            this.logger = logger;
         }
 
         public async Task<ResponseCluster<IEnumerable<Usuario>>> GetAll(int pageIndex, int pageSize)
         {
-            try
+            var usuarios = await _repository.GetAll(pageIndex, pageSize);
+            return new ResponseCluster<IEnumerable<Usuario>>()
             {
-                return await _repository.GetAll(pageIndex, pageSize);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+                erros = usuarios.erros,
+                metaData = usuarios.metaData,
+                totalItemCount = usuarios.totalItemCount,
+                objValue = usuarios.objValue,
+            };
         }
         public async Task<Usuario> Get(int id, string nome)
         {
@@ -83,16 +87,15 @@ namespace APIorm.Services
                 throw e;
             }
         }
-        public Task<Usuario> DeleteUsuario(long id)
+        public async Task<Usuario> DeleteUsuario(long id)
         {
-            try
+            var exist = await _repository.ExistsAsync(id);
+            if (!exist)
             {
-                return _repository.DeleteUsuario(id);
+                logger.LogError("UsuarioService.Delete", "Usuário não encontrado");
+                throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado");
             }
-            catch(Exception e)
-            {
-                throw e;
-            }
+            return await _repository.DeleteAsync(id);
         }
         public Task<bool> VerificaUsuario(string login, string senha)
         {

@@ -7,6 +7,7 @@ using System;
 using APIorm.Models.Interface;
 using APIorm.Exceptions;
 using Microsoft.Extensions.Logging;
+using FluentValidator;
 
 namespace APIorm.Services
 {
@@ -23,7 +24,14 @@ namespace APIorm.Services
 
         public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
         {
-            return await repository.GetAll(pageIndex, pageSize);
+            var produtos = await repository.GetAll(pageIndex, pageSize);
+            return new ResponseCluster<IEnumerable<Produto>>
+            {
+                totalItemCount = produtos.totalItemCount,
+                metaData = produtos.metaData,
+                erros = produtos.erros,
+                objValue = produtos.objValue,
+            };
         }
         public Produto Get(int id, string descricao)
         {
@@ -62,7 +70,7 @@ namespace APIorm.Services
                 logger.LogError("ProdutoService.Delete", "Produto não encontrado");
                 throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado");
             }
-            return await repository.Delete(id);
+            return await repository.DeleteAsync(id);
         }
     }
 }
