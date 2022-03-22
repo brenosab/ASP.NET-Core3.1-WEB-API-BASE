@@ -83,8 +83,6 @@ namespace APIorm.Repositories
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
 
             var produto = await _context.Produto.FindAsync(id);
-            if (produto == null) throw new ApiException(ApiException.ApiExceptionReason.PRODUTO_NAO_ENCONTRADO, "Produto não encontrado");
-
             _context.Produto.Remove(produto);
             await _context.SaveChangesAsync();
             return produto;
