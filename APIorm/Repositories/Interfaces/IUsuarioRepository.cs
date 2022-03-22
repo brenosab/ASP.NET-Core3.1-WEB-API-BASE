@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace APIorm.Repositories.Interfaces
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioRepository : IRepository<Usuario>
     {
-        Task<ResponseCluster<IEnumerable<Usuario>>> GetAll(int pageIndex, int pageSize);
         Task<Usuario> Get(int id, string nome);
         Task<ResponseCluster<IEnumerable<Usuario>>> GetUsuarioList(IEnumerable<int> idList);
         Task<Usuario> PutUsuario(long id, Usuario usuario);
         Task<Usuario> PostUsuario(UsuarioViewModel usuario);
         Task<string> PostUsuarioList(IEnumerable<Usuario> usuarioList);
-        Task<Usuario> DeleteUsuario(long id);
         Task<bool> VerificaUsuario(string login, string senha);
     }
 }

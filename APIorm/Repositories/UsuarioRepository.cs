@@ -15,13 +15,11 @@ using X.PagedList;
 
 namespace APIorm.Repositories
 {
-    public class UsuarioRepository : IUsuarioRepository
+    public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
         private readonly CompraContext _context;
-        private const int DefaultPageIndex = 1;
-        private const int DefaultPageSize = 10;
 
-        public UsuarioRepository(CompraContext context)
+        public UsuarioRepository(CompraContext context) : base(context)
         {
             _context = context;
         }
@@ -37,23 +35,6 @@ namespace APIorm.Repositories
 
             if(usuario == null) throw new ApiException(ApiException.ApiExceptionReason.USUARIO_NAO_ENCONTRADO, "Usuário não encontrado");
             return usuario;
-        }
-
-        public async Task<ResponseCluster<IEnumerable<Usuario>>> GetAll(int pageIndex, int pageSize)
-        {
-            if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
-
-            pageSize = pageSize == 0 ? DefaultPageSize : pageSize;
-            pageIndex = pageIndex == 0 ? DefaultPageIndex : pageIndex;
-
-            var usuarios = await _context.Usuario.ToPagedListAsync(pageIndex, pageSize);
-            var count = usuarios.TotalItemCount;
-
-            return new ResponseCluster<IEnumerable<Usuario>>() { 
-                objValue = usuarios, 
-                totalItemCount = count,
-                metaData = usuarios.GetMetaData()
-            };
         }
 
         public async Task<Usuario> PutUsuario(long id, Usuario usuario)
@@ -131,18 +112,6 @@ namespace APIorm.Repositories
             await _context.SaveChangesAsync();              
                 
             return string.Empty;
-        }
-
-        public async Task<Usuario> DeleteUsuario(long id)
-        {
-            if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
-
-            var usuario = await _context.Usuario.FindAsync(id);
-            if (usuario == null) throw new Exception("Usuário não encontrado");
-            _context.Usuario.Remove(usuario);
-            await _context.SaveChangesAsync();
-
-            return usuario;
         }
 
         public async Task<bool> VerificaUsuario(string login, string senha)
