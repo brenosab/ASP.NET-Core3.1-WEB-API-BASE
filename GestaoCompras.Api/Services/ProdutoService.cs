@@ -7,6 +7,8 @@ using System;
 using GestaoCompras.Domain.Entities.Interface;
 using GestaoCompras.Domain.Exceptions;
 using Microsoft.Extensions.Logging;
+using GestaoCompras.Domain.Dtos;
+using GestaoCompras.Domain.Mapper;
 
 namespace GestaoCompras.Api.Services
 {
@@ -20,7 +22,6 @@ namespace GestaoCompras.Api.Services
             this.repository = repository;
             this.logger = logger;
         }
-
         public async Task<ResponseCluster<IEnumerable<Produto>>> GetAll(int pageIndex, int pageSize)
         {
             var produtos = await repository.GetAll(pageIndex, pageSize);
@@ -32,9 +33,14 @@ namespace GestaoCompras.Api.Services
                 objValue = produtos.objValue,
             };
         }
-        public Produto Get(int id, string descricao)
+        public ProdutoDto Get(int id, string descricao)
         {
-            return repository.Get(id, descricao);
+            var produto = repository.Get(id, descricao);
+
+            var mapper = MapperConfig.InitializeAutomapper();
+            ProdutoDto produtoDto = mapper.Map<ProdutoDto>(produto);
+
+            return produtoDto;
         }
         public Task<ResponseCluster<IEnumerable<Produto>>> GetProdutoList(IEnumerable<int> idList)
         {
@@ -55,6 +61,7 @@ namespace GestaoCompras.Api.Services
         public Task<Produto> Post(Produto produto)
         {
             produto.DataHoraCadastro = DateTime.Now;
+
             return repository.AddAsync(produto);
         }
         public Task<string> PostProdutoList(IEnumerable<Produto> produtoList)

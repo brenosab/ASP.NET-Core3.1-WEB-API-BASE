@@ -12,6 +12,9 @@ using System.Linq;
 using GestaoCompras.Infra.Repositories;
 using GestaoCompras.Domain.Services;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
+using GestaoCompras.Domain.Entities;
+using GestaoCompras.Domain.Dtos;
 
 namespace GestaoCompras.Api
 {
@@ -43,7 +46,7 @@ namespace GestaoCompras.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Gestão Compras Api", Version = "v1" });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
-                        
+
             services.AddDbContext<CompraContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

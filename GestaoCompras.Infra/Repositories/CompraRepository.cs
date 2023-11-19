@@ -46,7 +46,7 @@ namespace GestaoCompras.Infra.Repositories
             return compra;
         }
 
-        public async Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize)
+        public new async Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize)
         {
             if (!_context.Database.CanConnect()) throw new ApiException(ApiException.ApiExceptionReason.DB_CONNECTION_NOT_COMPLETED, "Não foi possível abrir conexão com banco de dados");
 

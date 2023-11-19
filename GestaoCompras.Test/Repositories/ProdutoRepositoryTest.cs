@@ -1,14 +1,14 @@
-using APIorm.Exceptions;
-using APIorm.Entities;
-using APIorm.Entities.Context;
-using APIorm.Repositories;
-using APIorm.Repositories.Interfaces;
+using GestaoCompras.Domain.Exceptions;
+using GestaoCompras.Domain.Entities;
+using GestaoCompras.Infra.Context;
+using GestaoCompras.Infra.Repositories;
+using GestaoCompras.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace APIormTest
+namespace GestaoCompras.Test
 {
     [TestClass]
     public class ProdutoRepositoryTest
@@ -46,7 +46,7 @@ namespace APIormTest
         [DataRow(new int[] { 22, 3, 100, 200, 214, 872 })]
         public void GetList_HappyDay(IEnumerable<int> codigoList)
         {
-            var result = _repository.GetProdutoList(codigoList);
+            var result = _repository.GetList(codigoList);
             foreach (Produto produto in result.Result.objValue)
             {
                 Assert.IsTrue(codigoList.Contains(produto.Codigo));
@@ -57,7 +57,7 @@ namespace APIormTest
         [DataRow(new int[] { 221, 35, 99 })]
         public void GetList_Nao_Existente(IEnumerable<int> codigoList)
         {
-            var result = _repository.GetProdutoList(codigoList);
+            var result = _repository.GetList(codigoList);
 
             Assert.IsFalse(result.Result.objValue.Any());
             Assert.AreEqual(codigoList.Count(), result.Result.erros.Count());
@@ -71,13 +71,13 @@ namespace APIormTest
         [DataRow(new int[] { 3,350, 1, 412, 30 })]
         public void GetList_Alguns_Produtos_Validos_E_Outros_Nao(IEnumerable<int> codigoList)
         {
-            var result = _repository.GetProdutoList(codigoList);
+            var result = _repository.GetList(codigoList);
 
             Assert.AreEqual(2, result.Result.erros.Count());
             Assert.AreEqual(3, result.Result.objValue.Count());
           
-            Assert.IsNotNull(result.Result.erros.Where(erro => erro.Id == 350 && erro.Mensagem == "Produto não encontrado").FirstOrDefault());
-            Assert.IsNotNull(result.Result.erros.Where(erro => erro.Id == 412 && erro.Mensagem == "Produto não encontrado").FirstOrDefault());
+            Assert.IsNotNull(result.Result.erros.Where(erro => erro.Id == 350 && erro.Mensagem == "Produto nï¿½o encontrado").FirstOrDefault());
+            Assert.IsNotNull(result.Result.erros.Where(erro => erro.Id == 412 && erro.Mensagem == "Produto nï¿½o encontrado").FirstOrDefault());
 
             Assert.IsNotNull(result.Result.objValue.Where(produto => produto.Codigo == 3).FirstOrDefault());
             Assert.IsNotNull(result.Result.objValue.Where(produto => produto.Codigo == 1).FirstOrDefault());

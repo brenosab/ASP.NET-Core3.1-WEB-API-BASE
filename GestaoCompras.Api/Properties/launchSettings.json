@@ -19,7 +19,7 @@
         "VERSION": "1.0.0"
       }
     },
-    "APIorm": {
+    "GestaoCompras.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

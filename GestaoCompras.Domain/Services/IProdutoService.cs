@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GestaoCompras.Domain.Entities;
+using GestaoCompras.Domain.Dtos;
 
 namespace GestaoCompras.Domain.Services
 {
     public interface IProdutoService
     {
-        Produto Get(int id, string descricao);
+        ProdutoDto Get(int id, string descricao);
         Task<Produto> Put(long id, Produto produto);
         Task<Produto> Post(Produto produto);
         Task<Produto> Delete(long id);

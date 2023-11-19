@@ -14,7 +14,6 @@ namespace GestaoCompras.Api.Services
         {
             this.repository = repository;
         }
-
         public async Task<ResponseCluster<IEnumerable<Compra>>> GetAll(int pageIndex, int pageSize)
         {
             return await repository.GetAll(pageIndex, pageSize);

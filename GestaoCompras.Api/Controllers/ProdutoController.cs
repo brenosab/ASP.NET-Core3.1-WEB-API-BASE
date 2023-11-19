@@ -42,7 +42,7 @@ namespace GestaoCompras.Api.Controllers
             try
             {
                 var result = service.Get(id, descricao);
-                return CreatedAtAction("GetProduto", new { id = result.IdProduto }, result);
+                return CreatedAtAction("GetProduto", new { id }, result);
 
             }
             catch (Exception e)

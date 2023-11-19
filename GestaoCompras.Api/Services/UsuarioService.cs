@@ -3,7 +3,6 @@ using GestaoCompras.Domain.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GestaoCompras.Domain.Services;
-using System;
 using GestaoCompras.Domain.Entities.Interface;
 using GestaoCompras.Domain.ViewModels;
 using GestaoCompras.Domain.Exceptions;
@@ -34,58 +33,23 @@ namespace GestaoCompras.Api.Services
         }
         public async Task<Usuario> Get(int id, string nome)
         {
-            try
-            {
-                return await _repository.Get(id, nome);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return await _repository.Get(id, nome);
         }
         public Task<ResponseCluster<IEnumerable<Usuario>>> GetUsuarioList(IEnumerable<int> idList)
         {
-            try
-            {
-                return _repository.GetUsuarioList(idList);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return _repository.GetUsuarioList(idList);
         }
         public Task<Usuario> PutUsuario(long id, Usuario usuario)
         {
-            try
-            {
-                return _repository.PutUsuario(id, usuario);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return _repository.PutUsuario(id, usuario);
         }
         public Task<Usuario> PostUsuario(UsuarioViewModel usuario)
         {
-            try
-            {
-                return _repository.PostUsuario(usuario);
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
+            return _repository.PostUsuario(usuario);
         }
         public Task<string> PostUsuarioList(IEnumerable<Usuario> usuarioList)
         {
-            try
-            {
-                return _repository.PostUsuarioList(usuarioList);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return _repository.PostUsuarioList(usuarioList);
         }
         public async Task<Usuario> DeleteUsuario(long id)
         {
@@ -99,14 +63,7 @@ namespace GestaoCompras.Api.Services
         }
         public Task<bool> VerificaUsuario(string login, string senha)
         {
-            try
-            {
-                return _repository.VerificaUsuario(login, senha);
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
+            return _repository.VerificaUsuario(login, senha);
         }
     }
 }

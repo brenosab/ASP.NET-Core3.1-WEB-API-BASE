@@ -1,14 +1,14 @@
-using APIorm.Exceptions;
-using APIorm.Entities;
-using APIorm.Entities.Context;
-using APIorm.Repositories;
-using APIorm.Repositories.Interfaces;
+using GestaoCompras.Domain.Exceptions;
+using GestaoCompras.Domain.Entities;
+using GestaoCompras.Infra.Context;
+using GestaoCompras.Infra.Repositories;
+using GestaoCompras.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace APIormTest
+namespace GestaoCompras.Test
 {
     [TestClass]
     public class CompraRepositoryTest
@@ -29,8 +29,8 @@ namespace APIormTest
         [DataRow(10006)]
         public void Get_HappyDay(long codigo)
         {
-            var result = _repository.Get(codigo);
-            Assert.AreEqual(codigo, result.IdCompra);
+            var compra = _repository.Get(codigo);
+            Assert.AreEqual(codigo, compra.Result.IdCompra);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace APIormTest
         [DataRow(new long[] { 22, 3, 100, 200, 214, 872 })]
         public void GetList_HappyDay(IEnumerable<long> codigoList)
         {
-            var result = _repository.GetCompraList(codigoList);
+            var result = _repository.GetList(codigoList);
             foreach (Compra compra in result.Result.objValue)
             {
                 Assert.IsTrue(codigoList.Contains(compra.IdCompra));
@@ -57,7 +57,7 @@ namespace APIormTest
         [DataRow(new long[] { 221, 35, 99 })]
         public void GetList_Nao_Existente(IEnumerable<long> codigoList)
         {
-            var result = _repository.GetCompraList(codigoList);
+            var result = _repository.GetList(codigoList);
 
             Assert.IsFalse(result.Result.objValue.Any());
             Assert.AreEqual(codigoList.Count(), result.Result.erros.Count());
@@ -71,13 +71,13 @@ namespace APIormTest
         [DataRow(new long[] { 4, 3, 10002, 1, 30 })]
         public void GetList_Algumas_Compras_Validas_E_Outras_Nao(IEnumerable<long> codigoList)
         {
-            var result = _repository.GetCompraList(codigoList);
+            var result = _repository.GetList(codigoList);
 
             Assert.AreEqual(2, result.Result.erros.Count());
             Assert.AreEqual(3, result.Result.objValue.Count());
           
-            Assert.IsNotNull(result.Result.erros.Where(erro => erro.Id == 3 && erro.Mensagem == "Compra não encontrada").FirstOrDefault());
-            Assert.IsNotNull(result.Result.erros.Where(erro => erro.Id == 30 && erro.Mensagem == "Compra não encontrada").FirstOrDefault());
+            Assert.IsNotNull(result.Result.erros.Where(erro => erro.Id == 3 && erro.Mensagem == "Compra nï¿½o encontrada").FirstOrDefault());
+            Assert.IsNotNull(result.Result.erros.Where(erro => erro.Id == 30 && erro.Mensagem == "Compra nï¿½o encontrada").FirstOrDefault());
 
             Assert.IsNotNull(result.Result.objValue.Where(produto => produto.IdCompra == 4).FirstOrDefault());
             Assert.IsNotNull(result.Result.objValue.Where(produto => produto.IdCompra == 10002).FirstOrDefault());

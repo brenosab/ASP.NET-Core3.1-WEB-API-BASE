@@ -7,7 +7,7 @@ namespace GestaoCompras.Domain.Repositories
 {
     public interface IProdutoRepository : IRepository<Produto>
     {
-        Produto Get(int id, string descricao);
+        Produto Get(int id, string descricao = null);
         Task<ResponseCluster<IEnumerable<Produto>>> GetList(IEnumerable<int> idList);
         Task<string> PostList(IEnumerable<Produto> produtoList);
     }
